@@ -1,0 +1,50 @@
+/* Enter your custom styles here */
+
+.customCard {
+  border: 1px solid #919191;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  padding: 16px;
+  min-height: 37.5rem;
+}
+
+.cardsBottom{
+   border: 1px solid #919191;
+}
+
+.customBackground{
+  background-color: rgb(245, 243, 243);  
+  border: 1px solid #919191;
+}
+
+.tilesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem; 
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+  .customCard {
+    min-height: 25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .customCard {
+    min-height: auto;
+    padding: 12px;
+  }
+  
+  .tilesContainer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .mapPanel {
+    margin: 0 auto;
+  }
+}
+
