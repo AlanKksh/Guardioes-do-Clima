@@ -3,279 +3,163 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:vbm="sap.ui.vbm"
     xmlns="sap.m"
-    xmlns:layout="sap.ui.layout.cssgrid"
->
-    <Page id="page">
-        <layout:CSSGrid
-            gridTemplateColumns="repeat(auto-fit, minmax(20rem, 1fr))"
-            gridGap="1rem"
-            class="sapUiResponsiveMargin">
-            <Panel
-                headerText="Informações Clima"
-                class="customCard"
-                width="100%"
-                height="auto" >
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    displayBlock="true">
+    
+    <Page id="mainPage" title="UI5 Clima" 
+          showNavButton="false" 
+          class="sapUiResponsiveContentPadding">
+        <headerContent>
+            <HBox id="headerHBox" wrap="Wrap">
+                <Title  
+                    id="titleLugares"
+                    text="Lugares Populares"
+                    titleStyle="H5"
+                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>   
 
-                <ObjectListItem
-                    title="{= ${weatherModel>/name} + ' (' + ${weatherModel>/sys/country} + ')'}"
-                    icon="sap-icon://light-mode"
-                    number="{weatherModel>/weather/0/description}"
-                    class="sapUiSmallMarginTop"
-                    type="Inactive">
-                    <attributes>
-                        <ObjectAttribute text="Condições climáticas atuais na cidade."/>
-                    </attributes>
-                    <firstStatus>
-                        <ObjectStatus
-                            text="{path: 'weatherModel>/main/temp', formatter: '.formatTemperature'}"
-                            state="{path: 'weatherModel>/main/temp', formatter: '.formatTemperatureState'}"
-                            visible="true"/>
-                    </firstStatus>
-                </ObjectListItem>
+                <Button 
+                    id="btnSaoPaulo"
+                    text="São Paulo 14°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 
-                <ObjectListItem
-                    title="Sensação Térmica"
-                    icon="sap-icon://temperature"
-                    number="{weatherModel>/main/feels_like}"
-                    numberUnit="°C"
-                    class="sapUiSmallMarginTop"
-                    type="Inactive">
-                    <attributes>
-                        <ObjectAttribute text="Sensação térmica percebida."/>
-                    </attributes>
-                    <firstStatus>
-                        <ObjectStatus
-                            text="{path: 'weatherModel>/main/feels_like', formatter: '.formatTemperature'}"
-                            state="{path: 'weatherModel>/main/feels_like', formatter: '.formatTemperatureState'}"
-                            visible="true"/>
-                    </firstStatus>
-                </ObjectListItem>
+                <Button 
+                    id="btnRio"
+                    text="Rio de Janeiro 21°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 
-                <ObjectListItem
-                    title="Umidade e Pressão"
-                    icon="sap-icon://heating-cooling"
-                    number="{weatherModel>/main/humidity}"
-                    numberUnit="%"
-                    class="sapUiSmallMarginTop"
-                    type="Inactive">
-                    <attributes>
-                        <ObjectAttribute text="Pressão: {weatherModel>/main/pressure} hPa" />
-                    </attributes>
-                    <firstStatus>
-                        <ObjectStatus
-                            text="{weatherModel>/main/pressure} hPa"
-                            state="None"
-                            visible="true"/>
-                    </firstStatus>
-                </ObjectListItem>
+                <Button 
+                    id="btnBrasilia"
+                    text="Brasília 15°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 
-                <ObjectListItem
-                    title="Vento"
-                    icon="sap-icon://line-chart"
-                    number="{weatherModel>/wind/speed}"
-                    numberUnit="m/s"
-                    class="sapUiSmallMarginTop"
-                    type="Inactive">
-                    <attributes>
-                        <ObjectAttribute text="Velocidade do vento atual."/>
-                    </attributes>
-                    <firstStatus>
-                        <ObjectStatus
-                            text="{weatherModel>/wind/speed} m/s"
-                            state="None"
-                            visible="true"/>
-                    </firstStatus>
-                </ObjectListItem>
+                <Button 
+                    id="btnSalvador"
+                    text="Salvador 25°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                <Input id="cityInput" width="9rem" placeholder="Digite uma cidade..." class="sapUiSmallMarginEnd sapUiTinyMarginTop" submit="onButtonPress"/>
+                <Button id="btnBuscar" icon="sap-icon://search" text="Buscar" type="Ghost" class="sapUiSizeCompact sapUiTinyMarginTop" press="onButtonPress"/>
+            </HBox>
+        </headerContent>
+    
+        <layout:Grid 
+            id="climateGrid"
+            defaultSpan="L12 M12 S12" 
+            containerQuery="true"
+            hSpacing="1"
+            vSpacing="1">
+            
+            <Panel id="climatePanel" class="limiterPanel">
+                <layoutData>
+                    <layout:GridData span="L5 M12 S12"/>
+                </layoutData>
+                <content>
+                    <VBox id="climateVBox" class="sapUiMediumMargin">
+                        <HBox justifyContent="SpaceBetween" alignItems="Start">
+                            <Title id="climateTitle" text="Clima Atual" titleStyle="H4" />
+                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact"/>
+                        </HBox>
+                            <Text id="currentTimeText" text="{/currentTime}" />
+                            
+                        <HBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
+                            <core:Icon
+                                src="sap-icon://light-mode"
+                                size="4rem"
+                                color="#FFA500"
+                                class="sapUiMediumMarginEnd">
+                            </core:Icon>
+
+                                <Title text="14°C" titleStyle="H1" class="sapUiTinyMarginBottom"/>
+                            <VBox class="sapUiSmallMarginBegin">
+                                <Title text="Ensolarado" titleStyle="H4" class="sapUiTinyMarginBottom"/>
+                                <Text text="Sensação térmica 14°" class="sapUiSmallText"/>
+                            </VBox>
+                        </HBox>
+                            <Text text="O céu estará predominante ensolarado, a máxima sera de 25°C." class="sapUiSmallMarginTop sapUiMediumMarginBottom"/>
+
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap">
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Qualidade do ar" class=" sapUiTinyMarginEnd"/>
+                                <ObjectStatus text="116" state="Warning" icon="sap-icon://circle" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Vento" class=" sapUiTinyMarginEnd" />
+                                <ObjectStatus text="8 km/h" state="None" icon="sap-icon://arrow-left" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Umidade" class=" sapUiTinyMarginEnd"/>
+                                <ObjectStatus text="90%" state="None" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Visibilidade" class=" sapUiTinyMarginEnd"/>
+                                <ObjectStatus text="8 km" state="None" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Pressão" class=" sapUiTinyMarginEnd"/>
+                                <ObjectStatus text="1022 mb" state="None" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                <Text text="Ponto de orvalho" class=" sapUiTinyMarginEnd"/>
+                                <ObjectStatus text="13°" state="None" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>            
+                </content>
             </Panel>
-          
-         
-            <Panel
-                headerText="Localização"
-                class="customCard mapPanel"
-                width="95%"
-                height="auto" >
-
-                <Input
-                    id="cityInput"
-                    placeholder="Digite um local"
-                    width="15rem"/>
-
-                <Button
-                    text="Buscar"
-                    press="onButtonPress"/>
-
-                <Text
-                    id="weatherResult"
-                    text=""/>
-
-                <vbm:GeoMap
-                    id="GeoMap"
+            
+            <VBox id="mapVBox">
+                <layoutData>
+                    <layout:GridData span="L4 M12 S12"/>
+                </layoutData>
+                <vbm:GeoMap 
+                    id="geoMap"
                     width="100%"
-                    height="29rem"
-                    centerPosition="{viewModel>/long};{viewModel>/lat}">
-
+                    height="24rem"
+                    centerPosition="{viewModel>/long};{viewModel>/lat};0"
+                    zoomlevel="10">
                     <vbm:Spots id="mapSpots">
-                        <vbm:items>
-                            <vbm:Spot
-                                position="{= ${viewModel>/long} + ';' + ${viewModel>/lat} }"
-                                text="{viewModel>/cidadeNome}"
-                                image="https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-                                alignment="5"/>
-                        </vbm:items>
+                        <vbm:Spot
+                            id="locationSpot"
+                            position="{viewModel>/long};{viewModel>/lat};0"/>
                     </vbm:Spots>
                 </vbm:GeoMap>
-
+            </VBox>
+            
+            <Panel id="mapPanel">
+                <layoutData>
+                    <layout:GridData span="L3 M12 S12"/>
+                </layoutData>
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Text text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos." class="sapUiTinyMarginBottom"/>
+                    </VBox>
+                </content>
             </Panel>
-         
-        </layout:CSSGrid>
+            
+        </layout:Grid>
+
         
-        <Panel backgroundDesign="Solid">
-            <HBox
-                alignItems="Center"
-                justifyContent="Center"
-                class="sapUiSamllMargin tilesContainer">
-                
-                <!-- Segunda-feira -->
-                <GenericTile
-                    header="Segunda"
-                    subheader="{forecastModel>/0/description}"
-                    class="sapUiMediumMarginEnd customBackground">
 
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
 
-                            <NumericContent
-                                icon="{forecastModel>/0/icon}"
-                                value="{forecastModel>/0/tempMax}"
-                                valueColor="{forecastModel>/0/tempColor}"
-                                withMargin="false"/>
 
-                        </TileContent>
-                    </GenericTile>
 
-                    <!-- Terça-feira -->
-                    <GenericTile
-                        header="Terça"
-                        subheader="{forecastModel>/1/description}"
-                        class="sapUiMediumMarginEnd customBackground">
+        
 
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
 
-                            <NumericContent
-                                icon="{forecastModel>/1/icon}"
-                                value="{forecastModel>/1/tempMax}"
-                                valueColor="{forecastModel>/1/tempColor}"
-                                withMargin="false"/>
 
-                        </TileContent>
-                    </GenericTile>
 
-                    <!-- Quarta-feira -->
-                    <GenericTile
-                        header="Quarta"
-                        subheader="{forecastModel>/2/description}"
-                        class="sapUiMediumMarginEnd customBackground">
 
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
 
-                            <NumericContent
-                                icon="{forecastModel>/2/icon}"
-                                value="{forecastModel>/2/tempMax}"
-                                valueColor="{forecastModel>/2/tempColor}"
-                                withMargin="false"/>
 
-                        </TileContent>
-                    </GenericTile>
-
-                    <!-- Quinta-feira -->
-                    <GenericTile
-                        header="Quinta"
-                        subheader="{forecastModel>/3/description}"
-                        class="sapUiMediumMarginEnd customBackground">
-
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
-
-                            <NumericContent
-                                icon="{forecastModel>/3/icon}"
-                                value="{forecastModel>/3/tempMax}"
-                                valueColor="{forecastModel>/3/tempColor}"
-                                withMargin="false"/>
-
-                        </TileContent>
-                    </GenericTile>
-
-                    <!-- Sexta-feira -->
-                    <GenericTile
-                        header="Sexta"
-                        subheader="{forecastModel>/4/description}"
-                        class="sapUiMediumMarginEnd customBackground">
-
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
-
-                            <NumericContent
-                                icon="{forecastModel>/4/icon}"
-                                value="{forecastModel>/4/tempMax}"
-                                valueColor="{forecastModel>/4/tempColor}"
-                                withMargin="false"/>
-
-                        </TileContent>
-                    </GenericTile>
-
-                    <!-- Sábado -->
-                    <GenericTile
-                        header="Sábado"
-                        subheader="{forecastModel>/5/description}"
-                        class="sapUiMediumMarginEnd customBackground">
-
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
-                            
-                            <NumericContent
-                                icon="{forecastModel>/5/icon}"
-                                value="{forecastModel>/5/tempMax}"
-                                valueColor="{forecastModel>/5/tempColor}"
-                                withMargin="false"/>
-
-                        </TileContent>
-                    </GenericTile>
-
-                    <!-- Domingo -->
-                    <GenericTile
-                        header="Domingo"
-                        subheader="{forecastModel>/6/description}"
-                        class="sapUiMediumMarginEnd customBackground">
-
-                        <TileContent
-                            unit="°C"
-                            footer="Previsão">
-
-                            <NumericContent
-                                icon="{forecastModel>/6/icon}"
-                                value="{forecastModel>/6/tempMax}"
-                                valueColor="{forecastModel>/6/tempColor}"
-                                withMargin="false"/>
-
-                        </TileContent>
-                    </GenericTile>
-                </HBox>
-            </Panel>
-
-            <Bar
-                class="customFooterBar"
-                design="Footer">
-
-                <contentLeft />
-            </Bar>
-       
+    
     </Page>
+
 </mvc:View>

@@ -14,8 +14,9 @@ sap.ui.define([
             });
             this.getView().setModel(oViewModel, "viewModel");
 
-            var oGeoMap = this.byId("GeoMap");
-
+            // Configurar GeoMap com OpenStreetMap
+            var oGeoMap = this.byId("geoMap");
+            
             var url = `https://tile.openstreetmap.org/{LOD}/{X}/{Y}.png`;
             var oMapConfig = {
                 "MapProvider": [{
@@ -44,6 +45,36 @@ sap.ui.define([
 
             oGeoMap.setMapConfiguration(oMapConfig);
             oGeoMap.setRefMapLayerStack("DEFAULT");
+            
+            // Inicializar modelo para a hora atual
+            var oTimeModel = new sap.ui.model.json.JSONModel({
+                currentTime: this.getCurrentTime()
+            });
+            this.getView().setModel(oTimeModel);
+            
+            // Atualizar a hora a cada segundo
+            this._timeInterval = setInterval(() => {
+                this.getView().getModel().setProperty("/currentTime", this.getCurrentTime());
+            }, 1000);
+        },
+
+        onExit: function() {
+            // Limpar o intervalo quando o controller for destruído
+            if (this._timeInterval) {
+                clearInterval(this._timeInterval);
+            }
+        },
+
+        getCurrentTime: function() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            
+            // Formatar com zero à esquerda se necessário
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            return hours + ':' + minutes;
         },
 
 
@@ -58,7 +89,7 @@ sap.ui.define([
             if (!sQuery) return;
 
             var that = this;
-
+            
             fetch("https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(sQuery))
                 .then(response => response.json())
                 .then(data => {
@@ -67,12 +98,12 @@ sap.ui.define([
                         return;
                     } 
 
-                    var oGeoMap = that.byId("GeoMap");
+                    var oGeoMap = that.byId("geoMap");
                     var lat = parseFloat(data[0].lat);
                     var lon = parseFloat(data[0].lon);
 
                     oGeoMap.setCenterPosition(lon + ";" + lat);
-                    oGeoMap.setZoomlevel(10);
+                    oGeoMap.setZoomlevel(11);
 
                     that.getView().getModel("viewModel").setData({
                         lat: lat,
@@ -323,10 +354,7 @@ sap.ui.define([
                 const dayB = dayOrder[b.dia] || 0;
                 return dayA - dayB;
             });
-        },
-
-
-
+        }
 
     });
 });
