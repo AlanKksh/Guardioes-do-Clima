@@ -354,6 +354,44 @@ sap.ui.define([
                 const dayB = dayOrder[b.dia] || 0;
                 return dayA - dayB;
             });
+        },
+
+        navigateToCity: function(cityName, lat, lon) {
+            var oGeoMap = this.byId("geoMap");
+            
+            oGeoMap.setCenterPosition(lon + ";" + lat + ";0");
+            oGeoMap.setZoomlevel(11);
+
+            this.getView().getModel("viewModel").setData({
+                lat: lat,
+                long: lon,
+                cidadeNome: cityName
+            });
+        },
+
+        // São Paulo
+        onNavigateToSaoPaulo: function() {
+            this.navigateToCity("São Paulo", -23.5505, -46.6333);
+        },
+
+        // Rio Grande Do Sul
+        onNavigateToRioGrandeDoSul: function() {
+            this.navigateToCity("Rio Grande Do Sul", -29.9972, -51.1761);
+        },
+
+        // Rio de Janeiro
+        onNavigateToRio: function() {
+            this.navigateToCity("Rio de Janeiro", -22.9068, -43.1729);
+        },
+
+        // Brasília
+        onNavigateToBrasilia: function() {
+            this.navigateToCity("Brasília", -15.8267, -47.9218);
+        },
+
+        // Salvador
+        onNavigateToSalvador: function() {
+            this.navigateToCity("Salvador", -12.9714, -38.5014);
         }
 
     });

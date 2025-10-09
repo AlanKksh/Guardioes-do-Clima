@@ -10,45 +10,112 @@
     <Page id="mainPage" title="UI5 Clima" 
           showNavButton="false" 
           class="sapUiResponsiveContentPadding">
-        <headerContent>
-            <HBox id="headerHBox" wrap="Wrap">
+        <customHeader>
+            <OverflowToolbar id="headerToolbar">
                 <Title  
+                    id="pageTitleMain"
+                    text="UI5 Clima"
+                    level="H3">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataPageTitle" priority="NeverOverflow"/>
+                    </layoutData>
+                </Title>
+
+                <ToolbarSpacer id="toolbarSpacerLeft"/>
+
+                <Label 
                     id="titleLugares"
-                    text="Lugares Populares"
-                    titleStyle="H5"
-                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>   
+                    text="Lugares Populares:" 
+                    design="Bold">
+                    
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataTitle" priority="High"/>
+                    </layoutData>
+                </Label>
 
                 <Button 
                     id="btnSaoPaulo"
                     text="São Paulo 14°" 
                     type="Transparent" 
                     icon="sap-icon://building"
-                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                    press="onNavigateToSaoPaulo">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSaoPaulo" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <Button 
+                    id="btnRioGrandeDoSul"
+                    text="Rio Grande Do Sul 18°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToRioGrandeDoSul">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataRioGrandeDoSul" priority="Low"/>
+                    </layoutData>
+                </Button>
 
                 <Button 
                     id="btnRio"
                     text="Rio de Janeiro 21°" 
                     type="Transparent" 
                     icon="sap-icon://building"
-                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                    press="onNavigateToRio">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataRio" priority="Low"/>
+                    </layoutData>
+                </Button>
 
                 <Button 
                     id="btnBrasilia"
                     text="Brasília 15°" 
                     type="Transparent" 
                     icon="sap-icon://building"
-                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                    press="onNavigateToBrasilia">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataBrasilia" priority="Low"/>
+                    </layoutData>
+                </Button>
 
                 <Button 
                     id="btnSalvador"
                     text="Salvador 25°" 
                     type="Transparent" 
                     icon="sap-icon://building"
-                    class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-                <Input id="cityInput" width="9rem" placeholder="Digite uma cidade..." class="sapUiSmallMarginEnd sapUiTinyMarginTop" submit="onButtonPress"/>
-                <Button id="btnBuscar" icon="sap-icon://search" text="Buscar" type="Ghost" class="sapUiSizeCompact sapUiTinyMarginTop" press="onButtonPress"/>
-            </HBox>
-        </headerContent>
+                    press="onNavigateToSalvador">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSalvador" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <ToolbarSeparator id="toolbarSeparator">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSeparator" priority="Low"/>
+                    </layoutData>
+                </ToolbarSeparator>
+
+                <Input 
+                    id="cityInput" 
+                    width="9rem" 
+                    placeholder="Digite uma cidade..." 
+                    submit="onButtonPress">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataInput" priority="NeverOverflow"/>
+                    </layoutData>
+                </Input>
+
+                <Button 
+                    id="btnBuscar" 
+                    icon="sap-icon://search" 
+                    text="Buscar" 
+                    type="Ghost" 
+                    press="onButtonPress">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataBtnBuscar" priority="NeverOverflow"/>
+                    </layoutData>
+                </Button>
+            </OverflowToolbar>
+        </customHeader>
     
         <layout:Grid 
             id="climateGrid"
