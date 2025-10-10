@@ -142,6 +142,9 @@ sap.ui.define([
                     var oWeatherModel = new sap.ui.model.json.JSONModel(dados);
                     this.getView().setModel(oWeatherModel, "weatherModel");
 
+                    // Atualizar recomendação baseada no clima
+                    this.updateRecommendation(dados);
+
                     var lat = dados.coord.lat;
                     var lon = dados.coord.lon;
 
