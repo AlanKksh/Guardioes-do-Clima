@@ -124,12 +124,12 @@
             hSpacing="1"
             vSpacing="1">
             
-            <Panel id="climatePanel" class="limiterPanel">
+            <Panel id="climatePanel" class="limiterPanel " height="24rem">
                 <layoutData>
                     <layout:GridData span="L5 M12 S12"/>
                 </layoutData>
                 <content>
-                    <VBox id="climateVBox" class="sapUiMediumMargin">
+                    <VBox id="climateVBox" class="sapUiMediumMargin sapUiSmallMarginTopS">
                         <HBox justifyContent="SpaceBetween" alignItems="Start">
                             <Title id="climateTitle" text="Clima Atual" titleStyle="H4" />
                             <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact"/>
@@ -184,7 +184,7 @@
             
             <VBox id="mapVBox">
                 <layoutData>
-                    <layout:GridData span="L4 M12 S12"/>
+                    <layout:GridData id="mapGridData" span="L4 M12 S12"/>
                 </layoutData>
                 <vbm:GeoMap 
                     id="geoMap"
@@ -200,23 +200,105 @@
                 </vbm:GeoMap>
             </VBox>
             
-            <Panel id="recommendationPanel" height="24rem">
+            <Panel id="suggestionsPanel" height="24rem">
                 <layoutData>
-                    <layout:GridData span="L3 M12 S12"/>
+                    <layout:GridData id="suggestionsGridData" span="L3 M12 S12"/>
                 </layoutData>
+
+                <Title text="Sugestões do Dia" titleStyle="H4" class="sapUiMediumMargin"/>
                 <content>
-                    <VBox class="sapUiSmallMargin">
-                       <Image width="100%" height="100%"/>
-                        
-                        <layout:Grid defaultSpan="L12 M12 S12">
-                           
-                        </layout:Grid>
+                    <VBox id="suggestionsVBox" class="sapUiMediumMarginBegin sapUiMediumMarginEnd">
+                        <Text 
+                            id="suggestionsDescription" 
+                            text="Baseado nas condições climáticas atuais:" 
+                            class="sapUiSmallMarginBottom"/>
+                        <List
+                            id="suggestionsList"
+                            items="{suggestionsModel>/suggestions}"
+                            noDataText="Busque uma cidade para ver as sugestões">
+                            <StandardListItem
+                                id="suggestionItem"
+                                title="{suggestionsModel>text}"
+                                type="Inactive"/>
+                        </List>
                     </VBox>
                 </content>
             </Panel>
-            
         </layout:Grid>
 
+        <layout:Grid
+            id="suggestionsGrid"
+            defaultSpan="L12 M12 S12" 
+            containerQuery="true"
+            hSpacing="1"
+            vSpacing="1">
+
+            <Panel id="PanelDayNow" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L2 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay1" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+             <Panel id="PanelDay2" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay3" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay4" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay5" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay6" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <Panel id="PanelDay7" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M6 S12"/>
+            </layoutData>
+            </Panel>
+
+            <VBox id="imageWeatherVBox" width="100%">
+                <layoutData>
+                    <layout:GridData span="L3 M12 S12"/>
+                </layoutData>
+                <Image 
+                    id="weatherImage"
+                    src="{viewModel>/weatherImage}"
+                    alt="Clima atual"
+                    width="100%"
+                    height="25rem"
+                    densityAware="false"
+                    class=""/>
+            </VBox>
+
+            
+
+            
+        </layout:Grid>
         
 
 
