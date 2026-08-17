@@ -26,3 +26,48 @@
   font-family: 'Courier New', monospace;
   letter-spacing: 1px;
 }
+
+.hide-on-small-medium {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .hide-on-small-medium {
+    display: block;
+  }
+}
+
+.todayPanelContent {
+  width: 100%;
+}
+
+.todayPanelIconTemp {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1023px) {
+  .todayPanelIconTemp {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .todayPanelIconTemp .sapMTitle {
+    margin-left: auto;
+  }
+}
+
+.forecastPanelIconTemp {
+  gap: 0.5rem;
+}
+
+@media (max-width: 1023px) {
+  .forecastPanelIconTemp {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .forecastPanelTemp {
+    margin-left: auto;
+  }
+}

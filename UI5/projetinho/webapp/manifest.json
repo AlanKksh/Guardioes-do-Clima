@@ -41,8 +41,8 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.ui.vbm": {}
-        
+        "sap.ui.vbm": {},
+        "sap.viz": {}
       }
     },
     "contentDensities": {

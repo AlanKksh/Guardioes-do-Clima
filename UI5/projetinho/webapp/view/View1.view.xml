@@ -5,6 +5,9 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:layout="sap.ui.layout"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     displayBlock="true">
     
     <Page id="mainPage" title="UI5 Clima" 
@@ -138,16 +141,16 @@
                             
                         <HBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
                             <core:Icon
-                                src="sap-icon://light-mode"
+                                src="{weatherModel>/weatherIcon}"
                                 size="4rem"
-                                color="#FFA500"
+                                color="{weatherModel>/weatherColor}"
                                 class="sapUiMediumMarginEnd">
                             </core:Icon>
 
-                                <Title text="14°C" titleStyle="H1" class="sapUiTinyMarginBottom"/>
+                                <Title text="{weatherModel>/main/temp}°C" titleStyle="H1" class="sapUiTinyMarginBottom"/>
                             <VBox class="sapUiSmallMarginBegin">
-                                <Title text="Ensolarado" titleStyle="H4" class="sapUiTinyMarginBottom"/>
-                                <Text text="Sensação térmica 14°" class="sapUiSmallText"/>
+                                <Title text="{weatherModel>/weather/0/description}" titleStyle="H4" class="sapUiTinyMarginBottom"/>
+                                <Text text="Sensação térmica {weatherModel>/main/feels_like}°" class="sapUiSmallText"/>
                             </VBox>
                         </HBox>
                             <Text text="O céu estará predominante ensolarado, a máxima sera de 25°C." class="sapUiSmallMarginTop sapUiMediumMarginBottom"/>
@@ -235,50 +238,254 @@
 
             <Panel id="PanelDayNow" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L2 M6 S12"/>
+                <layout:GridData span="L2 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Hoje" titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" class="todayPanelContent">
+                        <HBox alignItems="Center" class="todayPanelIconTemp">
+                            <core:Icon
+                                src="{weatherModel>/weatherIcon}"
+                                size="2rem"
+                                color="{weatherModel>/weatherColor}"
+                                class="sapUiTinyMarginEnd">
+                            </core:Icon>
+                            <Title text="{weatherModel>/main/temp}°" titleStyle="H4"/>
+                        </HBox>
+                          <Text text="{weatherModel>/dynamicText}" class="sapUiSmallText hide-on-small-medium"/>
+                    </HBox>
+                   
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay1" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Seg." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <HBox alignItems="Center" class="forecastPanelIconTemp">
+                            <core:Icon
+                                src="{= ${forecastModel>/0/icon} || 'sap-icon://light-mode'}"
+                                size="2rem"
+                                color="{= ${forecastModel>/0/weatherColor} || '#FFA500'}"
+                                class="sapUiTinyMarginEnd">
+                            </core:Icon>
+                           
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/0/temperature} || '26'}°" titleStyle="H4" class="forecastPanelTemp"/>
+                        </VBox>
+                        </HBox> 
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
-             <Panel id="PanelDay2" height="8rem" width="100%">
+            <Panel id="PanelDay2" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Ter." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/1/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/1/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/1/temperature} || '26'}°" titleStyle="H4" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay3" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Qua." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/2/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/2/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/2/temperature} || '27'}°" titleStyle="H4"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay4" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Qui." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/3/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/3/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/3/temperature} || '24'}°" titleStyle="H4" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay5" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Sex." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/4/icon} || 'sap-icon://cloud'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/4/weatherColor} || '#0070F3'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/4/temperature} || '18'}°" titleStyle="H4" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay6" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Sáb." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/5/icon} || 'sap-icon://cloud'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/5/weatherColor} || '#0070F3'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/5/temperature} || '17'}°" titleStyle="H4" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
             </Panel>
 
             <Panel id="PanelDay7" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M6 S12"/>
+                <layout:GridData span="L1 M3 S6"/>
             </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin">
+                    <Title text="Dom." titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                        <core:Icon
+                            src="{= ${forecastModel>/6/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/6/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd">
+                        </core:Icon>
+                        <VBox alignItems="End">
+                            <Title text="{= ${forecastModel>/6/temperature} || '20'}°" titleStyle="H4" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="weeklyDetailsPanel" height="8rem" width="100%">
+                <layoutData>
+                    <layout:GridData id="weeklyDetailsGridData" span="L3 M12 S12"/>
+                </layoutData>
+                <content>
+                    <VBox id="weeklyDetailsVBox" class="sapUiSmallMargin">
+                        <Title id="weeklyDetailsTitle" text="Sensações do Dia" titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                        <HBox id="weeklyDetailsContent" justifyContent="SpaceBetween" alignItems="Center">
+                            <VBox id="weeklyHumidityBox" class="sapUiTinyMarginEnd">
+                                <Text id="weeklyHumidityLabel" text="Umidade / Secura" class="sapUiTinyMarginBottom"/>
+                                <Title id="weeklyHumidityValue" text="{= ${weatherModel>/humidityStatus} || '--'}" titleStyle="H5"/>
+                            </VBox>
+                            <VBox id="weeklyHeatBox" class="sapUiTinyMarginEnd">
+                                <Text id="weeklyHeatLabel" text="Intensidade do Calor" class="sapUiTinyMarginBottom"/>
+                                <Title id="weeklyHeatValue" text="{= ${weatherModel>/heatStatus} || '--'}" titleStyle="H5"/>
+                            </VBox>
+                            <VBox id="weeklyWindBox">
+                                <Text id="weeklyWindLabel" text="Influência do Vento" class="sapUiTinyMarginBottom"/>
+                                <Title id="weeklyWindValue" text="{= ${weatherModel>/windStatus} || '--'}" titleStyle="H5"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </content>
+            </Panel>
+
+            <Panel id="hourlyChartPanel" width="100%">
+                <layoutData>
+                    <layout:GridData id="gridDataHourlyChart" span="L9 M12 S12"/>
+                </layoutData>
+                <content>
+                    <viz:VizFrame
+                        id="hourlyLineChart"
+                        width="100%"
+                        height="16rem"
+                        uiConfig="{applicationSet:'fiori'}"
+                        vizType="line"
+                        vizProperties="{&quot;title&quot;:{&quot;visible&quot;:false},&quot;valueAxis&quot;:{&quot;title&quot;:{&quot;text&quot;:&quot;Temperatura (°C)&quot;},&quot;scale&quot;:{&quot;fixedRange&quot;:true,&quot;minValue&quot;:0,&quot;maxValue&quot;:40,&quot;stepSize&quot;:10},&quot;axisTick&quot;:{&quot;visible&quot;:true},&quot;label&quot;:{&quot;formatString&quot;:&quot;u&quot;}}}">
+                        <viz:dataset>
+                            <viz.data:FlattenedDataset
+                                id="hourlyDataset"
+                                data="{hourlyChartModel>/points}">
+                                <viz.data:dimensions>
+                                    <viz.data:DimensionDefinition
+                                        id="hourDimension"
+                                        name="Hora"
+                                        value="{hourLabel}"/>
+                                </viz.data:dimensions>
+                                <viz.data:measures>
+                                    <viz.data:MeasureDefinition
+                                        id="hourTemperatureMeasure"
+                                        name="Temperatura"
+                                        value="{temperature}"/>
+                                </viz.data:measures>
+                            </viz.data:FlattenedDataset>
+                        </viz:dataset>
+                        <viz:feeds>
+                            <viz.feeds:FeedItem
+                                id="valueAxisFeed"
+                                uid="valueAxis"
+                                type="Measure"
+                                values="Temperatura"/>
+                            <viz.feeds:FeedItem
+                                id="categoryAxisFeed"
+                                uid="categoryAxis"
+                                type="Dimension"
+                                values="Hora"/>
+                        </viz:feeds>
+                    </viz:VizFrame>
+                </content>
             </Panel>
 
             <VBox id="imageWeatherVBox" width="100%">
@@ -290,7 +497,7 @@
                     src="{viewModel>/weatherImage}"
                     alt="Clima atual"
                     width="100%"
-                    height="25rem"
+                    height="17.310rem"
                     densityAware="false"
                     class=""/>
             </VBox>
