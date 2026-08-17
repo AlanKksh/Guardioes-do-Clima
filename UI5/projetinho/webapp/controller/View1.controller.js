@@ -11,7 +11,7 @@ sap.ui.define([
                 lat: -23.5505,
                 long: -46.6333,
                 cidadeNome: "São Paulo",
-                weatherImage: "https://images.pexels.com/photos/259620/pexels-photo-259620.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1&t=" + new Date().getTime() // imagem de sol padrão
+                weatherImage: "../assets/logo-marca.jpeg"
             });
             this.getView().setModel(oViewModel, "viewModel");
 
@@ -123,7 +123,7 @@ sap.ui.define([
 
 
         onButtonPress: function () {
-            console.log("🔘 BOTÃO BUSCAR PRESSIONADO!");
+            console.log("Botão buscar pressionado!");
             this.onSearchLocation();
             this.onBuscarClima();
         },
@@ -335,7 +335,10 @@ sap.ui.define([
                     }
 
                     // Adicionar texto dinâmico baseado na descrição do clima
-                    var weatherDescription = dados.weather[0].description.toLowerCase();
+                    var weatherDescription = (dados.weather[0].description || '').toLowerCase();
+                    var weatherDescriptionPT = this.getWeatherDescriptionInPortuguese(weatherDescription);
+                    dados.weatherDescriptionPT = weatherDescriptionPT;
+                    dados.weather[0].description = weatherDescriptionPT;
                     var dynamicText = this.getDynamicWeatherText(weatherDescription);
                     dados.dynamicText = dynamicText;
                     
@@ -345,9 +348,24 @@ sap.ui.define([
                     dados.weatherIcon = iconAndColor.icon;
                     dados.weatherColor = iconAndColor.color;
                     console.log("Weather Main:", weatherMain, "| Icon:", iconAndColor.icon, "| Color:", iconAndColor.color);
-
+                    
                     // Arredondar temperatura para número inteiro
                     dados.main.temp = Math.round(dados.main.temp);
+                    
+                    // Adicionar dados dinâmicos dos detalhes do clima
+                    dados.wind.speed = Math.round(dados.wind.speed * 10) / 10; // Arredondar para 1 casa decimal
+                    dados.visibility = Math.round(dados.visibility / 1000 * 10) / 10; // Converter para km
+                    dados.main.humidity = Math.round(dados.main.humidity);
+                    dados.main.pressure = Math.round(dados.main.pressure);
+                    
+                    // Calcular ponto de orvalho aproximado
+                    var temp = dados.main.temp;
+                    var humidity = dados.main.humidity;
+                    var dewPoint = temp - ((100 - humidity) / 5);
+                    dados.dewPoint = Math.round(dewPoint);
+                    
+                    // Gerar resumo dinâmico do clima
+                    dados.weatherSummary = this.generateWeatherSummary(dados);
 
                     // Definir status descritivos
                     dados.humidityStatus = this._getHumidityStatus(dados.main && dados.main.humidity);
@@ -702,7 +720,7 @@ sap.ui.define([
         },
         
         fetchWeatherForCity: function(cityName) {
-            console.log("🌍 Buscando clima para:", cityName);
+            console.log("Buscando clima para:", cityName);
             var sChaveAPI = "d6da45bb98ec8fca6ff1ea2cfa6b8674";
             var sUrlWeather = "https://api.openweathermap.org/data/2.5/weather?q=" +
                 encodeURIComponent(cityName) + "&appid=" + sChaveAPI + "&units=metric";
@@ -717,7 +735,10 @@ sap.ui.define([
                     }
 
                     // Adicionar texto dinâmico e ícone
-                    var weatherDescription = dados.weather[0].description.toLowerCase();
+                    var weatherDescription = (dados.weather[0].description || '').toLowerCase();
+                    var weatherDescriptionPT = this.getWeatherDescriptionInPortuguese(weatherDescription);
+                    dados.weatherDescriptionPT = weatherDescriptionPT;
+                    dados.weather[0].description = weatherDescriptionPT;
                     var dynamicText = this.getDynamicWeatherText(weatherDescription);
                     dados.dynamicText = dynamicText;
                     
@@ -726,9 +747,25 @@ sap.ui.define([
                     dados.weatherIcon = iconAndColor.icon;
                     dados.weatherColor = iconAndColor.color;
                     console.log("[fetchWeatherForCity] Weather Main:", weatherMain, "| Icon:", iconAndColor.icon, "| Color:", iconAndColor.color);
-
+                    
                     // Arredondar temperatura para número inteiro
                     dados.main.temp = Math.round(dados.main.temp);
+                    
+                    // Adicionar dados dinâmicos dos detalhes do clima
+                    dados.wind.speed = Math.round(dados.wind.speed * 10) / 10;
+                    dados.visibility = Math.round(dados.visibility / 1000 * 10) / 10;
+                    dados.main.humidity = Math.round(dados.main.humidity);
+                    dados.main.pressure = Math.round(dados.main.pressure);
+                    
+                    // Calcular ponto de orvalho aproximado
+                    var temp = dados.main.temp;
+                    var humidity = dados.main.humidity;
+                    var dewPoint = temp - ((100 - humidity) / 5);
+                    dados.dewPoint = Math.round(dewPoint);
+                    dados.main.temp = Math.round(dados.main.temp);
+                    
+                    // Gerar resumo dinâmico do clima
+                    dados.weatherSummary = this.generateWeatherSummary(dados);
 
                     // Definir status descritivos
                     dados.humidityStatus = this._getHumidityStatus(dados.main && dados.main.humidity);
@@ -936,7 +973,7 @@ sap.ui.define([
 
         // Método para atualizar recomendações baseadas no clima
         updateRecommendation: function(weatherData) {
-            console.log("▶▶▶ updateRecommendation CHAMADO ◀◀◀");
+            console.log("updateRecommendation CHAMADO");
             console.log("weatherData completo:", weatherData);
             console.log("weather array:", weatherData.weather);
             
@@ -953,17 +990,17 @@ sap.ui.define([
             var tempMin = weatherData.main.temp_min;
             var tempMax = weatherData.main.temp_max;
 
-            // Atualizar a imagem do clima baseada nas condições atuais
-            console.log("=== ATUALIZANDO IMAGEM ===");
+            // Manter a imagem local fixa, sem substituição por URL dinâmica do clima
+            console.log("ATUALIZANDO IMAGEM");
             console.log("Condição climática da API:", weatherMain, "-", weatherDesc);
-            var weatherImageUrl = this.getWeatherImage(weatherMain, weatherDesc);
+            var weatherImageUrl = "../assets/logo-marca.jpeg";
             console.log("URL da imagem selecionada:", weatherImageUrl);
             
             var oViewModel = this.getView().getModel("viewModel");
             console.log("Modelo antes:", oViewModel.getProperty("/weatherImage"));
             oViewModel.setProperty("/weatherImage", weatherImageUrl);
             console.log("Modelo depois:", oViewModel.getProperty("/weatherImage"));
-            console.log("=========================");
+            console.log("FIM ATUALIZAÇÃO IMAGEM");
 
             // 1. SUGESTÃO BASEADA NA TEMPERATURA ATUAL
             if (temp >= 30) {
@@ -1159,6 +1196,36 @@ sap.ui.define([
             this.getView().setModel(oSuggestionsModel, "suggestionsModel");
         },
 
+        getWeatherDescriptionInPortuguese: function(description) {
+            const weatherDescriptions = {
+                'clear sky': 'céu limpo',
+                'few clouds': 'poucas nuvens',
+                'scattered clouds': 'nuvens dispersas',
+                'broken clouds': 'nuvens quebradas',
+                'overcast clouds': 'nublado',
+                'light rain': 'chuva leve',
+                'moderate rain': 'chuva moderada',
+                'heavy rain': 'chuva forte',
+                'thunderstorm': 'tempestade',
+                'snow': 'neve',
+                'mist': 'névoa',
+                'fog': 'névoa',
+                'haze': 'névoa',
+                'smoke': 'fumaça',
+                'dust': 'poeira',
+                'sand': 'areia',
+                'ash': 'cinzas',
+                'squall': 'rajada',
+                'tornado': 'tornado',
+                'drizzle': 'chuvisco',
+                'heavy intensity rain': 'chuva forte',
+                'rain': 'chuva',
+                'clouds': 'nublado'
+            };
+
+            return weatherDescriptions[(description || '').toLowerCase()] || (description || '');
+        },
+
         // Função para gerar texto dinâmico baseado na descrição do clima
         getDynamicWeatherText: function(weatherDescription) {
             // Condições que indicam chuva
@@ -1207,6 +1274,66 @@ sap.ui.define([
                 icon: 'sap-icon://light-mode',
                 color: '#FFA500'
             };
+        },
+
+        // Função para gerar resumo dinâmico do clima (máximo 4 frases)
+        generateWeatherSummary: function(weatherData) {
+            if (!weatherData || !weatherData.weather) {
+                return "Dados climáticos indisponíveis.";
+            }
+            
+            var summary = [];
+            var weatherMain = weatherData.weather[0].main;
+            var weatherDesc = weatherData.weather[0].description;
+            var temp = weatherData.main.temp;
+            var tempMax = weatherData.main.temp_max;
+            var humidity = weatherData.main.humidity;
+            var wind = weatherData.wind.speed;
+            var feelsLike = weatherData.main.feels_like;
+            
+            // Frase 1: Condição principal do céu
+            if (weatherMain === 'Clear') {
+                summary.push("O céu estará predominantemente ensolarado.");
+            } else if (weatherMain === 'Clouds') {
+                summary.push("O céu estará predominantemente nublado.");
+            } else if (weatherMain === 'Rain') {
+                summary.push("Espera-se chuva durante o dia.");
+            } else if (weatherMain === 'Thunderstorm') {
+                summary.push("Há possibilidade de tempestade com raios.");
+            } else if (weatherMain === 'Drizzle') {
+                summary.push("Pode haver garoa leve durante o dia.");
+            } else {
+                summary.push("Condição climática: " + weatherDesc + ".");
+            }
+            
+            // Frase 2: Temperatura máxima
+            summary.push("A máxima será de " + Math.round(tempMax) + "°C");
+            
+            // Frase 3: Umidade e vento (se relevantes)
+            if (humidity > 80) {
+                summary.push("com elevada umidade de " + humidity + "%.");
+            } else if (wind > 15) {
+                summary.push("com ventos de " + Math.round(wind * 10) / 10 + " km/h.");
+            } else if (feelsLike < temp - 2) {
+                summary.push("mas com sensação térmica de " + Math.round(feelsLike) + "°C.");
+            } else {
+                summary.push("");
+            }
+            
+            // Limpar frases vazias
+            summary = summary.filter(s => s.length > 0);
+            
+            // Limitar a 4 frases máximo
+            if (summary.length > 4) {
+                summary = summary.slice(0, 4);
+            }
+            
+            // Garantir que a última frase tem ponto final
+            if (summary.length > 0 && !summary[summary.length - 1].endsWith('.')) {
+                summary[summary.length - 1] += '.';
+            }
+            
+            return summary.join(' ');
         },
 
         // Função para determinar se é sol (true) ou nuvem (false) - mantida para compatibilidade
