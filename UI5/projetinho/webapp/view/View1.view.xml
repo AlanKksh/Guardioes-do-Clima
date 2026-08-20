@@ -126,7 +126,7 @@
                     <VBox id="climateVBox" class="sapUiMediumMargin sapUiSmallMarginTopS">
                         <HBox justifyContent="SpaceBetween" alignItems="Start">
                             <Title id="climateTitle" text="Clima Atual" titleStyle="H4" />
-                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact"/>
+                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact" press=".onVerMais"/>
                         </HBox>
                             <Text id="currentTimeText" text="{/currentTime}" />
                             
@@ -178,7 +178,7 @@
             
             <VBox id="mapVBox">
                 <layoutData>
-                    <layout:GridData id="mapGridData" span="L4 M12 S12"/>
+                    <layout:GridData id="mapGridData" span="L7 M12 S12"/>
                 </layoutData>
                 <vbm:GeoMap 
                     id="geoMap"
@@ -193,31 +193,6 @@
                     </vbm:Spots>
                 </vbm:GeoMap>
             </VBox>
-            
-            <Panel id="suggestionsPanel" height="24rem">
-                <layoutData>
-                    <layout:GridData id="suggestionsGridData" span="L3 M12 S12"/>
-                </layoutData>
-
-                <Title text="Sugestões do Dia" titleStyle="H4" class="sapUiMediumMargin"/>
-                <content>
-                    <VBox id="suggestionsVBox" class="sapUiMediumMarginBegin sapUiMediumMarginEnd">
-                        <Text 
-                            id="suggestionsDescription" 
-                            text="Baseado nas condições climáticas atuais:" 
-                            class="sapUiSmallMarginBottom"/>
-                        <List
-                            id="suggestionsList"
-                            items="{suggestionsModel>/suggestions}"
-                            noDataText="Busque uma cidade para ver as sugestões">
-                            <StandardListItem
-                                id="suggestionItem"
-                                title="{suggestionsModel>text}"
-                                type="Inactive"/>
-                        </List>
-                    </VBox>
-                </content>
-            </Panel>
         </layout:Grid>
 
         <layout:Grid
@@ -408,27 +383,22 @@
             </content>
             </Panel>
 
-            <Panel id="weeklyDetailsPanel" height="8rem" width="100%">
+            <Panel id="suggestionsPanel" height="8rem" width="100%">
                 <layoutData>
-                    <layout:GridData id="weeklyDetailsGridData" span="L3 M12 S12"/>
+                    <layout:GridData id="suggestionsGridData" span="L3 M12 S12"/>
                 </layoutData>
                 <content>
-                    <VBox id="weeklyDetailsVBox" class="sapUiSmallMargin">
-                        <Title id="weeklyDetailsTitle" text="Sensações do Dia" titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                        <HBox id="weeklyDetailsContent" justifyContent="SpaceBetween" alignItems="Center">
-                            <VBox id="weeklyHumidityBox" class="sapUiTinyMarginEnd">
-                                <Text id="weeklyHumidityLabel" text="Umidade / Secura" class="sapUiTinyMarginBottom"/>
-                                <Title id="weeklyHumidityValue" text="{= ${weatherModel>/humidityStatus} || '--'}" titleStyle="H5"/>
-                            </VBox>
-                            <VBox id="weeklyHeatBox" class="sapUiTinyMarginEnd">
-                                <Text id="weeklyHeatLabel" text="Intensidade do Calor" class="sapUiTinyMarginBottom"/>
-                                <Title id="weeklyHeatValue" text="{= ${weatherModel>/heatStatus} || '--'}" titleStyle="H5"/>
-                            </VBox>
-                            <VBox id="weeklyWindBox">
-                                <Text id="weeklyWindLabel" text="Influência do Vento" class="sapUiTinyMarginBottom"/>
-                                <Title id="weeklyWindValue" text="{= ${weatherModel>/windStatus} || '--'}" titleStyle="H5"/>
-                            </VBox>
-                        </HBox>
+                    <VBox id="suggestionsVBox" class="sapUiSmallMargin">
+                        <Title id="suggestionsTitle" text="Sugestões do Dia" titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                        <List
+                            id="suggestionsList"
+                            items="{suggestionsModel>/suggestions}"
+                            noDataText="Busque uma cidade para ver as sugestões">
+                            <StandardListItem
+                                id="suggestionItem"
+                                title="{suggestionsModel>text}"
+                                type="Inactive"/>
+                        </List>
                     </VBox>
                 </content>
             </Panel>

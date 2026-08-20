@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-], function(Controller, MessageToast,) {
+    "alan/projetos/projetinho/model/MockLocaisService"
+], function(Controller, MessageToast, MockLocaisService) {
     "use strict";
 
     return Controller.extend("alan.projetos.projetinho.controller.View1", {
@@ -310,14 +311,17 @@ sap.ui.define([
             return padded + "h";
         },
 
-        onBuscarClima: function () {
+        onBuscarClima: async function () {
+            console.log(">>> ENTROU NO onBuscarClima <<<");
             var sCidade = this.byId("cityInput").getValue();
-            console.log("onBuscarClima chamado para cidade:", sCidade);
-            
             if (!sCidade) {
                 MessageToast.show("Digite uma cidade.");
                 return;
             }
+            console.log("onBuscarClima chamado para cidade:", sCidade);
+            console.log("VALOR PESQUISADO:", sCidade);
+            var infoLocal = await this.identificarLocal(sCidade);
+            console.log("LOCAL IDENTIFICADO:", infoLocal);        
 
             var sChaveAPI = "d6da45bb98ec8fca6ff1ea2cfa6b8674";
             var sUrlWeather = "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -383,6 +387,12 @@ sap.ui.define([
 
                     var lat = dados.coord.lat;
                     var lon = dados.coord.lon;
+
+                    this._localPesquisado = dados.name;
+                    this._tipoLocal = (infoLocal && infoLocal.tipo) || "Cidade";
+                    this._capital = "";
+                    // Mock local (sem API externa de turismo)
+                    this.buscarInformacoesTuristicas(sCidade || dados.name);
 
                     console.log("Latitude:", lat, "Longitude:", lon);
 
@@ -645,15 +655,6 @@ sap.ui.define([
                          desc.includes('drizzle') || 
                          desc.includes('shower') ||
                          desc.includes('thunderstorm');
-            
-            if (isRainy) {
-                console.log("-> Retornando imagem de CHUVA");
-                return 'https://images.pexels.com/photos/1463530/pexels-photo-1463530.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1&t=' + timestamp;
-            }
-            
-            // Imagem de sol para todos os outros casos (Clear, Clouds, etc)
-            console.log("-> Retornando imagem de SOL");
-            return 'https://images.pexels.com/photos/259620/pexels-photo-259620.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1&t=' + timestamp;
         },
 
         
@@ -704,19 +705,13 @@ sap.ui.define([
             return (dayLabel || '').toString().trim().toLowerCase();
         },
 
-        navigateToCity: function(cityName, lat, lon) {
-            var oGeoMap = this.byId("geoMap");
-            
-            oGeoMap.setCenterPosition(lon + ";" + lat + ";0");
-            oGeoMap.setZoomlevel(11);
-
-            var oViewModel = this.getView().getModel("viewModel");
-            oViewModel.setProperty("/lat", lat);
-            oViewModel.setProperty("/long", lon);
-            oViewModel.setProperty("/cidadeNome", cityName);
-            
-            // Buscar dados do clima para a cidade
-            this.fetchWeatherForCity(cityName);
+        navigateToCity: function(cityName) {
+            // Mesmo fluxo do botão Buscar: preenche o input e dispara clima + mapa + mock
+            var oCityInput = this.byId("cityInput");
+            if (oCityInput) {
+                oCityInput.setValue(cityName);
+            }
+            this.onButtonPress();
         },
         
         fetchWeatherForCity: function(cityName) {
@@ -948,27 +943,27 @@ sap.ui.define([
 
         // São Paulo
         onNavigateToSaoPaulo: function() {
-            this.navigateToCity("São Paulo", -23.5505, -46.6333);
+            this.navigateToCity("São Paulo");
         },
 
         // Rio Grande Do Sul
         onNavigateToRioGrandeDoSul: function() {
-            this.navigateToCity("Rio Grande Do Sul", -29.9972, -51.1761);
+            this.navigateToCity("Rio Grande Do Sul");
         },
 
         // Rio de Janeiro
         onNavigateToRio: function() {
-            this.navigateToCity("Rio de Janeiro", -22.9068, -43.1729);
+            this.navigateToCity("Rio de Janeiro");
         },
 
         // Brasília
         onNavigateToBrasilia: function() {
-            this.navigateToCity("Brasília", -15.8267, -47.9218);
+            this.navigateToCity("Brasília");
         },
 
         // Salvador
         onNavigateToSalvador: function() {
-            this.navigateToCity("Salvador", -12.9714, -38.5014);
+            this.navigateToCity("Salvador");
         },
 
         // Método para atualizar recomendações baseadas no clima
@@ -979,16 +974,11 @@ sap.ui.define([
             
             var suggestions = [];
             var temp = weatherData.main.temp;
-            var weather = weatherData.weather[0].main.toLowerCase();
-            var weatherMain = weatherData.weather[0].main;
-            var weatherDesc = weatherData.weather[0].description;
+            var weatherMain = (weatherData.weather[0].main || "").toLowerCase();
+            var weatherDesc = (weatherData.weather[0].description || "").toLowerCase();
             var humidity = weatherData.main.humidity;
-            var windSpeed = weatherData.wind.speed;
-            var pressure = weatherData.main.pressure;
-            var visibility = weatherData.visibility;
+            var windSpeed = weatherData.wind ? weatherData.wind.speed : 0;
             var feelsLike = weatherData.main.feels_like;
-            var tempMin = weatherData.main.temp_min;
-            var tempMax = weatherData.main.temp_max;
 
             // Manter a imagem local fixa, sem substituição por URL dinâmica do clima
             console.log("ATUALIZANDO IMAGEM");
@@ -1002,196 +992,129 @@ sap.ui.define([
             console.log("Modelo depois:", oViewModel.getProperty("/weatherImage"));
             console.log("FIM ATUALIZAÇÃO IMAGEM");
 
-            // 1. SUGESTÃO BASEADA NA TEMPERATURA ATUAL
-            if (temp >= 30) {
-                suggestions.push({
-                    icon: "sap-icon://sunny",
-                    text: "Dia perfeito para uma piscina ou praia ",
-                    type: "Success"
-                });
-            } else if (temp >= 25 && temp < 30) {
-                suggestions.push({
-                    icon: "sap-icon://sunny",
-                    text: "Que tal um piquenique no parque hoje ",
-                    type: "Success"
-                });
-            } else if (temp >= 15 && temp < 25) {
-                suggestions.push({
-                    icon: "sap-icon://walking",
-                    text: "Temperatura ideal para uma caminhada ao ar livre ",
-                    type: "Success"
-                });
-            } else if (temp >= 5 && temp < 15) {
-                suggestions.push({
-                    icon: "sap-icon://warm-jacket",
-                    text: "Dia perfeito para uma xícara de café quente ",
-                    type: "Information"
-                });
-            } else {
-                suggestions.push({
-                    icon: "sap-icon://home",
-                    text: "Que tal um dia aconchegante em casa com um bom filme ",
-                    type: "Information"
-                });
-            }
-
-            // 2. SUGESTÃO BASEADA NA CONDIÇÃO CLIMÁTICA
-            if (weather.includes("rain") || weather.includes("drizzle")) {
-                suggestions.push({
-                    icon: "sap-icon://umbrella",
-                    text: "Dia ideal para ler um bom livro em casa ",
-                    type: "Information"
-                });
-            } else if (weather.includes("thunderstorm")) {
-                suggestions.push({
-                    icon: "sap-icon://home",
-                    text: "Que tal organizar aquele cômodo que você sempre adia ",
-                    type: "Information"
-                });
-            } else if (weather.includes("snow")) {
-                suggestions.push({
-                    icon: "sap-icon://snow",
-                    text: "Dia perfeito para fazer um boneco de neve ",
-                    type: "Success"
-                });
-            } else if (weather.includes("clear")) {
-                suggestions.push({
-                    icon: "sap-icon://sunny",
-                    text: "Céu azul convida para uma aventura ao ar livre ",
-                    type: "Success"
-                });
-            } else if (weather.includes("clouds")) {
-                suggestions.push({
-                    icon: "sap-icon://cloud",
-                    text: "Clima perfeito para uma caminhada sem muito sol ",
-                    type: "Information"
-                });
-            } else if (weather.includes("fog") || weather.includes("mist")) {
-                suggestions.push({
-                    icon: "sap-icon://fog",
-                    text: "Ambiente misterioso para uma tarde de reflexão ",
-                    type: "Information"
-                });
-            }
-
-            // 3. SUGESTÃO BASEADA NA UMIDADE
-            if (humidity > 80) {
-                suggestions.push({
-                    icon: "sap-icon://drop",
-                    text: "Dia perfeito para hidratação extra e skincare ",
-                    type: "Information"
-                });
-            } else if (humidity < 30) {
-                suggestions.push({
-                    icon: "sap-icon://hydration",
-                    text: "Que tal experimentar uma bebida refrescante nova ",
-                    type: "Information"
-                });
-            } else {
-                suggestions.push({
-                    icon: "sap-icon://drop",
-                    text: "Condições ideais para aproveitar o dia com conforto ",
-                    type: "Success"
-                });
-            }
-
-            // 4. SUGESTÃO BASEADA NO VENTO
-            if (windSpeed > 15) {
-                suggestions.push({
-                    icon: "sap-icon://flight",
-                    text: "Dia perfeito para soltar pipas",
-                    type: "Success"
-                });
-            } else if (windSpeed > 8) {
-                suggestions.push({
-                    icon: "sap-icon://wind",
-                    text: "Brisa agradável para uma caminhada revigorante ",
-                    type: "Information"
-                });
-            } else {
-                suggestions.push({
-                    icon: "sap-icon://wind",
-                    text: "Ar parado convida para um momento de paz interior ",
-                    type: "Information"
-                });
-            }
-
-            // 5. SUGESTÃO BASEADA NA SENSATION TÉRMICA
-            var tempDiff = Math.abs(feelsLike - temp);
-            if (tempDiff > 3) {
-                if (feelsLike > temp) {
-                    suggestions.push({
-                        icon: "sap-icon://thermometer",
-                        text: "Que tal uma bebida gelada refrescante ",
-                        type: "Information"
-                    });
+            // Sugestões priorizam a condição climática da API (main)
+            if (weatherMain === "rain" || weatherMain === "drizzle" ||
+                weatherDesc.indexOf("chuva") !== -1 || weatherDesc.indexOf("garoa") !== -1) {
+                suggestions = [
+                    { icon: "sap-icon://home", text: "Melhor ficar em casa e aproveitar o aconchego", type: "Information" },
+                    { icon: "sap-icon://warm-jacket", text: "Que tal uma xícara de café quente enquanto chove", type: "Information" },
+                    { icon: "sap-icon://umbrella", text: "Se sair, não esqueça o guarda-chuva", type: "Information" },
+                    { icon: "sap-icon://home", text: "Dia ideal para ler um bom livro em casa", type: "Information" },
+                    { icon: "sap-icon://home", text: "Aproveite a chuva para um filme aconchegante", type: "Information" }
+                ];
+            } else if (weatherMain === "thunderstorm" || weatherDesc.indexOf("tempestade") !== -1) {
+                suggestions = [
+                    { icon: "sap-icon://home", text: "Fique em casa e evite exposição à tempestade", type: "Information" },
+                    { icon: "sap-icon://warm-jacket", text: "Momento ideal para um café e um bom livro", type: "Information" },
+                    { icon: "sap-icon://home", text: "Que tal um filme enquanto a chuva passa", type: "Information" },
+                    { icon: "sap-icon://alert", text: "Evite áreas abertas e objetos metálicos", type: "Information" },
+                    { icon: "sap-icon://home", text: "Bom horário para organizar a casa com calma", type: "Information" }
+                ];
+            } else if (weatherMain === "snow" || weatherDesc.indexOf("neve") !== -1) {
+                suggestions = [
+                    { icon: "sap-icon://home", text: "Dia frio: melhor se aquecer em casa", type: "Information" },
+                    { icon: "sap-icon://warm-jacket", text: "Aproveite para tomar algo bem quente", type: "Information" },
+                    { icon: "sap-icon://snow", text: "Se sair, vista-se bem agasalhado", type: "Information" },
+                    { icon: "sap-icon://home", text: "Que tal um filme quentinho no sofá", type: "Information" },
+                    { icon: "sap-icon://warm-jacket", text: "Prepare um chá ou chocolate quente", type: "Information" }
+                ];
+            } else if (weatherMain === "clear" || weatherDesc.indexOf("céu limpo") !== -1 || weatherDesc.indexOf("ensolarado") !== -1) {
+                if (temp >= 28) {
+                    suggestions = [
+                        { icon: "sap-icon://sunny", text: "Sol forte: ótimo dia para passear ao ar livre", type: "Success" },
+                        { icon: "sap-icon://sunny", text: "Que tal uma piscina, praia ou parque aquático", type: "Success" },
+                        { icon: "sap-icon://hydration", text: "Leve água e use protetor solar", type: "Information" },
+                        { icon: "sap-icon://walking", text: "Prefira passeios no início da manhã ou fim da tarde", type: "Information" },
+                        { icon: "sap-icon://sunny", text: "Bom dia para um sorvete ou bebida gelada", type: "Success" }
+                    ];
+                } else if (temp >= 18) {
+                    suggestions = [
+                        { icon: "sap-icon://walking", text: "Dia ensolarado: saia para passear", type: "Success" },
+                        { icon: "sap-icon://sunny", text: "Que tal um passeio no parque ou na praça", type: "Success" },
+                        { icon: "sap-icon://warm-jacket", text: "Aproveite para um café ao ar livre", type: "Success" },
+                        { icon: "sap-icon://group", text: "Bom momento para encontrar amigos fora de casa", type: "Success" },
+                        { icon: "sap-icon://sunny", text: "Leve óculos de sol e aproveite o dia", type: "Information" }
+                    ];
                 } else {
-                    suggestions.push({
-                        icon: "sap-icon://thermometer",
-                        text: "Momento ideal para um abraço quentinho ",
-                        type: "Information"
-                    });
+                    suggestions = [
+                        { icon: "sap-icon://walking", text: "Solzinho agradável para uma caminhada", type: "Success" },
+                        { icon: "sap-icon://warm-jacket", text: "Leve um casaco leve para o passeio", type: "Information" },
+                        { icon: "sap-icon://sunny", text: "Bom momento para tomar sol com calma", type: "Success" },
+                        { icon: "sap-icon://warm-jacket", text: "Que tal um café em um lugar ensolarado", type: "Success" },
+                        { icon: "sap-icon://walking", text: "Aproveite para alongar as pernas ao ar livre", type: "Success" }
+                    ];
                 }
+            } else if (weatherMain === "clouds" || weatherDesc.indexOf("nuvem") !== -1 || weatherDesc.indexOf("nublado") !== -1) {
+                if (temp >= 22) {
+                    suggestions = [
+                        { icon: "sap-icon://walking", text: "Nublado, mas bom para um passeio sem sol forte", type: "Success" },
+                        { icon: "sap-icon://cloud", text: "Que tal uma caminhada leve ao ar livre", type: "Success" },
+                        { icon: "sap-icon://warm-jacket", text: "Ótimo clima para um café em uma praça", type: "Information" },
+                        { icon: "sap-icon://group", text: "Bom dia para um encontro ao ar livre", type: "Success" },
+                        { icon: "sap-icon://cloud", text: "Leve um casaco leve caso o vento aumente", type: "Information" }
+                    ];
+                } else {
+                    suggestions = [
+                        { icon: "sap-icon://cloud", text: "Dia nublado: passeio curto ou plano em casa", type: "Information" },
+                        { icon: "sap-icon://warm-jacket", text: "Que tal um café quente em um lugar aconchegante", type: "Information" },
+                        { icon: "sap-icon://walking", text: "Se sair, leve um casaco leve", type: "Information" },
+                        { icon: "sap-icon://home", text: "Bom momento para um filme ou série", type: "Information" },
+                        { icon: "sap-icon://cloud", text: "Clima ideal para atividades tranquilas", type: "Information" }
+                    ];
+                }
+            } else if (weatherMain === "mist" || weatherMain === "fog" || weatherMain === "haze" ||
+                weatherDesc.indexOf("névoa") !== -1 || weatherDesc.indexOf("neblina") !== -1) {
+                suggestions = [
+                    { icon: "sap-icon://home", text: "Visibilidade baixa: prefira ficar em casa", type: "Information" },
+                    { icon: "sap-icon://warm-jacket", text: "Bom momento para um café e descansar", type: "Information" },
+                    { icon: "sap-icon://alert", text: "Se dirigir, redobre a atenção na estrada", type: "Information" },
+                    { icon: "sap-icon://home", text: "Que tal um livro ou um filme aconchegante", type: "Information" },
+                    { icon: "sap-icon://cloud", text: "Evite passeios longos enquanto a névoa persistir", type: "Information" }
+                ];
             } else {
-                suggestions.push({
-                    icon: "sap-icon://thermometer",
-                    text: "Temperatura perfeita para se sentir confortável ",
-                    type: "Success"
-                });
+                // Fallback pela temperatura quando a condição não for reconhecida
+                if (temp >= 28) {
+                    suggestions = [
+                        { icon: "sap-icon://sunny", text: "Dia quente: aproveite para sair e se refrescar", type: "Success" },
+                        { icon: "sap-icon://hydration", text: "Beba bastante água ao longo do dia", type: "Information" },
+                        { icon: "sap-icon://walking", text: "Prefira passeios em horários mais frescos", type: "Information" },
+                        { icon: "sap-icon://sunny", text: "Que tal uma bebida gelada ao ar livre", type: "Success" },
+                        { icon: "sap-icon://sunny", text: "Use protetor solar se ficar no sol", type: "Information" }
+                    ];
+                } else if (temp <= 15) {
+                    suggestions = [
+                        { icon: "sap-icon://home", text: "Dia frio: fique mais em casa se puder", type: "Information" },
+                        { icon: "sap-icon://warm-jacket", text: "Que tal um café quente para aquecer", type: "Information" },
+                        { icon: "sap-icon://home", text: "Momento ideal para um filme aconchegante", type: "Information" },
+                        { icon: "sap-icon://warm-jacket", text: "Vista-se em camadas se precisar sair", type: "Information" },
+                        { icon: "sap-icon://home", text: "Bom dia para um chá e descanso", type: "Information" }
+                    ];
+                } else {
+                    suggestions = [
+                        { icon: "sap-icon://walking", text: "Clima agradável para um passeio", type: "Success" },
+                        { icon: "sap-icon://warm-jacket", text: "Que tal um café fora de casa", type: "Success" },
+                        { icon: "sap-icon://group", text: "Bom dia para encontrar amigos ao ar livre", type: "Success" },
+                        { icon: "sap-icon://sunny", text: "Aproveite para conhecer um lugar novo", type: "Success" },
+                        { icon: "sap-icon://walking", text: "Ótimo momento para uma caminhada leve", type: "Success" }
+                    ];
+                }
             }
 
-            // 6. SUGESTÃO BASEADA NA VISIBILIDADE
-            if (visibility < 1000) {
-                suggestions.push({
-                    icon: "sap-icon://fog",
-                    text: "Ambiente misterioso perfeito para uma sessão de meditação ",
-                    type: "Information"
-                });
-            } else if (visibility < 5000) {
-                suggestions.push({
-                    icon: "sap-icon://weather-cloud",
-                    text: "Clima aconchegante para uma tarde de jogos em família ",
-                    type: "Information"
-                });
-            } else {
-                suggestions.push({
-                    icon: "sap-icon://eye",
-                    text: "Dia claro convida para explorar novos lugares ",
-                    type: "Success"
-                });
+            // Refinar a última sugestão com umidade/vento quando fizer sentido
+            if (suggestions.length >= 5) {
+                if (humidity < 30 && weatherMain === "clear") {
+                    suggestions[4] = { icon: "sap-icon://hydration", text: "Ar seco: hidrate-se bem durante o passeio", type: "Information" };
+                } else if (windSpeed > 10 && (weatherMain === "clear" || weatherMain === "clouds")) {
+                    suggestions[4] = { icon: "sap-icon://wind", text: "Há vento: leve um casaco leve no passeio", type: "Information" };
+                } else if (feelsLike - temp > 3 && temp >= 25) {
+                    suggestions[4] = { icon: "sap-icon://thermometer", text: "Sensação térmica alta: evite esforço no sol", type: "Information" };
+                }
             }
 
-            // 7. SUGESTÃO BASEADA NA PRESSÃO E VARIAÇÃO TÉRMICA
-            var tempVariation = tempMax - tempMin;
-            if (pressure < 1000) {
-                suggestions.push({
-                    icon: "sap-icon://weather-cloud",
-                    text: "Dia de mudanças - perfeito para ser espontâneo ",
-                    type: "Information"
-                });
-            } else if (pressure > 1020) {
-                suggestions.push({
-                    icon: "sap-icon://sunny",
-                    text: "Clima estável convida para planejar o futuro ",
-                    type: "Success"
-                });
-            } else if (tempVariation > 10) {
-                suggestions.push({
-                    icon: "sap-icon://thermometer",
-                    text: "Dia de contrastes - experimente algo diferente ",
-                    type: "Information"
-                });
-            } else {
-                suggestions.push({
-                    icon: "sap-icon://weather-cloud",
-                    text: "Dia equilibrado para encontrar harmonia interior ",
-                    type: "Information"
-                });
-            }
+            console.log("Sugestões geradas para", weatherMain, ":", suggestions);
 
-            // Atualizar o modelo com as sugestões
             var oSuggestionsModel = new sap.ui.model.json.JSONModel({
-                suggestions: suggestions
+                suggestions: suggestions.slice(0, 5)
             });
             this.getView().setModel(oSuggestionsModel, "suggestionsModel");
         },
@@ -1337,22 +1260,293 @@ sap.ui.define([
         },
 
         // Função para determinar se é sol (true) ou nuvem (false) - mantida para compatibilidade
-        isSunnyWeather: function(weatherMain) {
-            const rainConditions = ['Rain', 'Thunderstorm', 'Drizzle'];
-            const cloudConditions = ['Clouds'];
-            
-            console.log("Verificando clima:", weatherMain);
-            
-            // Retorna false para chuva e nuvem (não é sol)
-            if (rainConditions.includes(weatherMain) || cloudConditions.includes(weatherMain)) {
-                console.log("Não é sol");
-                return false;
-            }
-            
-            // Para todas as outras condições, retorna true (é sol)
-            console.log("É sol");
-            return true;
-        }
 
+        onVerMais: function () {
+            console.log("ENTROU NO onVerMais");
+
+            // Recria a modal para refletir o layout atual (país/estado/pontos)
+            if (this._oDialog) {
+                this._oDialog.destroy();
+                this._oDialog = null;
+            }
+
+            this._oDialog = new sap.m.Dialog({
+                    title: "Mais informações",
+                    contentWidth: "500px",
+                    contentHeight: "380px",
+
+                    content: [
+                        new sap.m.VBox({
+                            items: [
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/localPesquisado",
+                                        formatter: function (value) {
+                                            return "Local pesquisado: " + (value || "Não informado");
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/tipoLocal",
+                                        formatter: function (value) {
+                                            return "Tipo: " + (value || "Não informado");
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/pais",
+                                        formatter: function (value) {
+                                            return "País: " + (value || "—");
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/estado",
+                                        formatter: function (value) {
+                                            return "Estado: " + (value || "—");
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/capital",
+                                        formatter: function (value) {
+                                            return "Capital do estado: " + (value || "—");
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/museums/0/nome",
+                                        formatter: function (value) {
+                                            if (!value) {
+                                                return "Museu mais próximo: Não encontrado";
+                                            }
+                                            return "Museu mais próximo: " + value;
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/stadiums/0/nome",
+                                        formatter: function (value) {
+                                            if (!value) {
+                                                return "Estádio mais próximo: Não encontrado";
+                                            }
+                                            return "Estádio mais próximo: " + value;
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/parks/0/nome",
+                                        formatter: function (value) {
+                                            if (!value) {
+                                                return "Parque mais próximo: Não encontrado";
+                                            }
+                                            return "Parque mais próximo: " + value;
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/attractions/0/nome",
+                                        formatter: function (value) {
+                                            if (!value) {
+                                                return "Atração: Não encontrada";
+                                            }
+                                            return "Atração: " + value;
+                                        }
+                                    }
+                                }),
+
+                                new sap.m.Text({
+                                    text: {
+                                        path: "placesModel>/monuments/0/nome",
+                                        formatter: function (value) {
+                                            if (!value) {
+                                                return "Monumento: Não encontrado";
+                                            }
+                                            return "Monumento: " + value;
+                                        }
+                                    }
+                                })
+                            ]
+                        }).addStyleClass("sapUiSmallMargin")
+                    ],
+
+                    beginButton: new sap.m.Button({
+                        text: "Fechar",
+                        press: function () {
+                            this._oDialog.close();
+                        }.bind(this)
+                    })
+                });
+
+            this.getView().addDependent(this._oDialog);
+            this._oDialog.open();
+        },
+
+        /**
+         * Busca país / estado / capital / pontos turísticos no mock local.
+         */
+        buscarInformacoesTuristicas: async function (sCidadeBusca) {
+            try {
+                var oResultado = await MockLocaisService.buscarPorCidade(sCidadeBusca);
+
+                if (!oResultado) {
+                    oResultado = MockLocaisService.resultadoVazio(
+                        this._localPesquisado || sCidadeBusca,
+                        this._tipoLocal
+                    );
+                    MessageToast.show(
+                        "Cidade ainda não cadastrada no mock de locais turísticos."
+                    );
+                }
+
+                this._capital = oResultado.capital || "";
+                this._tipoLocal = oResultado.tipoLocal || this._tipoLocal;
+
+                this.getView().setModel(
+                    new sap.ui.model.json.JSONModel(oResultado),
+                    "placesModel"
+                );
+
+                console.log("RESULTADO TURISMO (mock):", oResultado);
+            } catch (error) {
+                console.error("Erro ao buscar mock de locais:", error);
+
+                this.getView().setModel(
+                    new sap.ui.model.json.JSONModel(
+                        MockLocaisService.resultadoVazio(
+                            this._localPesquisado,
+                            this._tipoLocal
+                        )
+                    ),
+                    "placesModel"
+                );
+
+                MessageToast.show(
+                    "Não foi possível carregar as informações turísticas."
+                );
+            }
+        },
+
+        calcularDistancia: function (
+                    lat1,
+                    lon1,
+                    lat2,
+                    lon2
+                ) {
+
+                    var R = 6371; // raio da Terra em km
+
+                    var dLat =
+                        (lat2 - lat1) * Math.PI / 180;
+
+                    var dLon =
+                        (lon2 - lon1) * Math.PI / 180;
+
+                    var a =
+                        Math.sin(dLat / 2) *
+                        Math.sin(dLat / 2) +
+
+                        Math.cos(lat1 * Math.PI / 180) *
+                        Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon / 2) *
+                        Math.sin(dLon / 2);
+
+                    var c =
+                        2 * Math.atan2(
+                            Math.sqrt(a),
+                            Math.sqrt(1 - a)
+                        );
+
+                    var distancia = R * c;
+
+                    return Math.round(distancia * 10) / 10;
+                },
+
+                identificarLocal: async function (local) {
+
+            var url =
+                "https://nominatim.openstreetmap.org/search" +
+                "?q=" + encodeURIComponent(local) +
+                "&format=jsonv2" +
+                "&addressdetails=1" +
+                "&limit=1";
+
+            try {
+
+                var response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error("Erro ao consultar Nominatim");
+                }
+
+                var resultados = await response.json();
+
+                if (!resultados.length) {
+                    return null;
+                }
+
+                var resultado = resultados[0];
+
+                console.log("NOMINATIM:", resultado);
+
+                var tipo = "Cidade";
+                var sAddressType = resultado.addresstype || "";
+                var sType = resultado.type || "";
+                var sClass = resultado.class || "";
+
+                // País / estado só quando o próprio resultado for isso
+                // (cidade também vem com address.state — isso NÃO a torna estado)
+                if (sAddressType === "country" || sType === "country") {
+                    tipo = "País";
+                } else if (sAddressType === "state" || sType === "state") {
+                    tipo = "Estado";
+                } else if (
+                    sAddressType === "city" ||
+                    sAddressType === "municipality" ||
+                    sAddressType === "town" ||
+                    sAddressType === "village" ||
+                    sAddressType === "suburb" ||
+                    sClass === "place" ||
+                    sType === "administrative"
+                ) {
+                    tipo = "Cidade";
+                }
+
+                return {
+                    nome: resultado.name,
+                    tipo: tipo,
+                    latitude: parseFloat(resultado.lat),
+                    longitude: parseFloat(resultado.lon),
+                    address: resultado.address
+                };
+
+            } catch (error) {
+
+                console.error("Erro Nominatim:", error);
+
+                return null;
+            }
+        },
+
+
+
+        
     });
 });
