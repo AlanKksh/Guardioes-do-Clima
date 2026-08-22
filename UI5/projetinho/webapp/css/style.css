@@ -1,5 +1,33 @@
 /* Enter your custom styles here */
 
+.pageNavTabs {
+  gap: 0.25rem;
+}
+
+.pageNavTab {
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  color: #6a6d70;
+  font-weight: 500;
+  min-width: 5.5rem;
+}
+
+.pageNavTab:hover {
+  background: #f5f6f7;
+  color: #32363a;
+}
+
+.pageNavTabActive {
+  color: #0a6ed1;
+  border-bottom-color: #0a6ed1;
+  font-weight: 600;
+}
+
+.pageNavTabActive:hover {
+  background: transparent;
+  color: #0a6ed1;
+}
+
 .limiterPanel{
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

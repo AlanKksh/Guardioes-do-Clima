@@ -1,0 +1,30 @@
+<mvc:View
+    controllerName="alan.projetos.projetinho.controller.View2"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page id="view2Page"
+          showNavButton="false"
+          class="sapUiResponsiveContentPadding no-page-title">
+
+        <customHeader>
+            <OverflowToolbar id="view2HeaderToolbar">
+                <core:Fragment
+                    fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
+                    type="XML"/>
+            </OverflowToolbar>
+        </customHeader>
+
+        <content>
+            <VBox id="view2Content" class="sapUiMediumMargin" alignItems="Start">
+                <Title id="view2WelcomeTitle" text="Pagina 2" titleStyle="H3"/>
+                <Text
+                    id="view2Description"
+                    text="Conteúdo da segunda página. Clique em Pagina 1 ou Pagina 2 acima para alternar entre as telas."
+                    class="sapUiSmallMarginTop"/>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

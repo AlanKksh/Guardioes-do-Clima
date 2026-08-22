@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "alan/projetos/projetinho/model/MockLocaisService"
-], function(Controller, MessageToast, MockLocaisService) {
+    "alan/projetos/projetinho/model/MockLocaisService",
+    "alan/projetos/projetinho/util/PageNavigation"
+], function(Controller, MessageToast, MockLocaisService, PageNavigation) {
     "use strict";
 
     return Controller.extend("alan.projetos.projetinho.controller.View1", {
@@ -101,6 +102,8 @@ sap.ui.define([
             
             // Carregar dados do clima inicial para São Paulo
             this.fetchWeatherForCity("São Paulo");
+
+            PageNavigation.init(this, "page1");
         },
 
         onExit: function() {
@@ -1177,6 +1180,14 @@ sap.ui.define([
         },
 
         // Função para determinar se é sol (true) ou nuvem (false) - mantida para compatibilidade
+
+        onNavigateToPage1: function () {
+            PageNavigation.navigateToPage1(this);
+        },
+
+        onNavigateToPage2: function () {
+            PageNavigation.navigateToPage2(this);
+        },
 
         onVerMais: function () {
             console.log("ENTROU NO onVerMais");

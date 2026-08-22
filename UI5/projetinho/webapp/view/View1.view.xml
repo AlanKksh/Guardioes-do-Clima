@@ -15,6 +15,10 @@
           class="sapUiResponsiveContentPadding no-page-title">
         <customHeader>
             <OverflowToolbar id="headerToolbar">
+                <core:Fragment
+                    fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
+                    type="XML"/>
+
                 <ToolbarSpacer id="toolbarSpacerLeft"/>
 
                 <Label 
