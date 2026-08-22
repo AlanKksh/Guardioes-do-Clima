@@ -3,6 +3,57 @@ sap.ui.define([], function () {
 
     var oCache = null;
 
+    /** Ícones e títulos fixos por tema (apresentação ao público). */
+    var TOPICOS_CONFIG = {
+        museu: {
+            id: "museu",
+            titulo: "Cultura e museus",
+            icone: "sap-icon://education",
+            textoVazio: "Ainda não temos um museu cadastrado para este local.",
+            montarTexto: function (sNome) {
+                return "Vale a pena conhecer o " + sNome + " — um ótimo programa cultural na cidade.";
+            }
+        },
+        estadio: {
+            id: "estadio",
+            titulo: "Esporte e estádios",
+            icone: "sap-icon://soccer",
+            textoVazio: "Ainda não temos um estádio cadastrado para este local.",
+            montarTexto: function (sNome) {
+                return "Para quem curte esporte, o destaque é o " + sNome + ".";
+            }
+        },
+        parque: {
+            id: "parque",
+            titulo: "Natureza e parques",
+            icone: "sap-icon://tree",
+            textoVazio: "Ainda não temos um parque cadastrado para este local.",
+            montarTexto: function (sNome) {
+                return "Para respirar ar puro e relaxar, visite o " + sNome + ".";
+            }
+        },
+        monumento: {
+            id: "monumento",
+            titulo: "Monumentos e história",
+            icone: "sap-icon://building",
+            textoVazio: "Ainda não temos um monumento cadastrado para este local.",
+            montarTexto: function (sNome) {
+                return "Um marco da cidade que conta história: " + sNome + ".";
+            }
+        },
+        atracao: {
+            id: "atracao",
+            titulo: "Atrações imperdíveis",
+            icone: "sap-icon://map",
+            textoVazio: "Ainda não temos uma atração cadastrada para este local.",
+            montarTexto: function (sNome) {
+                return "Não deixe de conhecer: " + sNome + " — um dos pontos mais queridos pelos visitantes.";
+            }
+        }
+    };
+
+    var ORDEM_TOPICOS = ["museu", "estadio", "parque", "monumento", "atracao"];
+
     function _normalizar(sTexto) {
         return String(sTexto || "")
             .toLowerCase()
@@ -23,15 +74,48 @@ sap.ui.define([], function () {
         });
     }
 
+    function _montarTopico(sChave, sNome) {
+        var oConfig = TOPICOS_CONFIG[sChave];
+        var bTemNome = !!(sNome && String(sNome).trim());
+
+        return {
+            id: oConfig.id,
+            titulo: oConfig.titulo,
+            icone: oConfig.icone,
+            nome: bTemNome ? sNome : "",
+            texto: bTemNome ? oConfig.montarTexto(sNome) : oConfig.textoVazio,
+            disponivel: bTemNome
+        };
+    }
+
+    function _montarTopicos(oPontos) {
+        oPontos = oPontos || {};
+        return ORDEM_TOPICOS.map(function (sChave) {
+            return _montarTopico(sChave, oPontos[sChave]);
+        });
+    }
+
+    function _montarResumo(oPais, oEstado, oCidade) {
+        var sCidade = oCidade.nome;
+        var sEstado = oEstado.nome;
+        var sPais = oPais.nome;
+
+        if (sCidade === oEstado.capital) {
+            return (
+                "Conheça " + sCidade + ", capital de " + sEstado +
+                " — um destino especial no " + sPais + "."
+            );
+        }
+
+        return (
+            "Conheça " + sCidade + ", no " + sEstado +
+            " (" + sPais + "). A capital do estado é " + oEstado.capital + "."
+        );
+    }
+
     function _montarResultado(oPais, oEstado, oCidade) {
         var oPontos = oCidade.pontos || {};
-
-        function _item(sNome, sTipo) {
-            if (!sNome) {
-                return [];
-            }
-            return [{ nome: sNome, tipo: sTipo }];
-        }
+        var aTopicos = _montarTopicos(oPontos);
 
         return {
             encontrado: true,
@@ -41,11 +125,56 @@ sap.ui.define([], function () {
             estado: oEstado.nome,
             capital: oEstado.capital,
             capitalPais: oPais.capital,
-            museums: _item(oPontos.museu, "Museu"),
-            stadiums: _item(oPontos.estadio, "Estádio"),
-            parks: _item(oPontos.parque, "Parque"),
-            attractions: _item(oPontos.atracao, "Ponto turístico"),
-            monuments: _item(oPontos.monumento, "Monumento")
+            resumo: _montarResumo(oPais, oEstado, oCidade),
+            localizacao: {
+                titulo: "Onde estamos",
+                icone: "sap-icon://globe",
+                texto:
+                    oCidade.nome + " · " + oEstado.nome + " · " + oPais.nome
+            },
+            topicos: aTopicos,
+            // Compatibilidade com bindings antigos
+            museums: oPontos.museu
+                ? [{ nome: oPontos.museu, tipo: "Museu" }]
+                : [],
+            stadiums: oPontos.estadio
+                ? [{ nome: oPontos.estadio, tipo: "Estádio" }]
+                : [],
+            parks: oPontos.parque
+                ? [{ nome: oPontos.parque, tipo: "Parque" }]
+                : [],
+            attractions: oPontos.atracao
+                ? [{ nome: oPontos.atracao, tipo: "Ponto turístico" }]
+                : [],
+            monuments: oPontos.monumento
+                ? [{ nome: oPontos.monumento, tipo: "Monumento" }]
+                : []
+        };
+    }
+
+    function _resultadoBase(sLocal, sTipo) {
+        return {
+            encontrado: false,
+            localPesquisado: sLocal || "",
+            tipoLocal: sTipo || "Cidade",
+            pais: "—",
+            estado: "—",
+            capital: "—",
+            capitalPais: "—",
+            resumo:
+                "Ainda não temos um guia turístico completo para este local. " +
+                "Tente buscar outra cidade cadastrada.",
+            localizacao: {
+                titulo: "Onde estamos",
+                icone: "sap-icon://globe",
+                texto: (sLocal || "Local") + " · informações indisponíveis"
+            },
+            topicos: _montarTopicos({}),
+            museums: [],
+            stadiums: [],
+            parks: [],
+            attractions: [],
+            monuments: []
         };
     }
 
@@ -77,7 +206,7 @@ sap.ui.define([], function () {
 
         /**
          * Busca cidade pelo nome digitado no campo de clima.
-         * Retorna país, estado, capital do estado e pontos turísticos.
+         * Retorna país, estado, capital e tópicos turísticos prontos para a UI.
          */
         buscarPorCidade: function (sCidade) {
             var sBusca = _normalizar(sCidade);
@@ -111,20 +240,7 @@ sap.ui.define([], function () {
         },
 
         resultadoVazio: function (sLocal, sTipo) {
-            return {
-                encontrado: false,
-                localPesquisado: sLocal || "",
-                tipoLocal: sTipo || "Cidade",
-                pais: "—",
-                estado: "—",
-                capital: "—",
-                capitalPais: "—",
-                museums: [],
-                stadiums: [],
-                parks: [],
-                attractions: [],
-                monuments: []
-            };
+            return _resultadoBase(sLocal, sTipo);
         }
     };
 });

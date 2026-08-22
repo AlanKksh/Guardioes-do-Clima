@@ -969,154 +969,71 @@ sap.ui.define([
         // Método para atualizar recomendações baseadas no clima
         updateRecommendation: function(weatherData) {
             console.log("updateRecommendation CHAMADO");
-            console.log("weatherData completo:", weatherData);
-            console.log("weather array:", weatherData.weather);
-            
+
             var suggestions = [];
-            var temp = weatherData.main.temp;
             var weatherMain = (weatherData.weather[0].main || "").toLowerCase();
             var weatherDesc = (weatherData.weather[0].description || "").toLowerCase();
-            var humidity = weatherData.main.humidity;
-            var windSpeed = weatherData.wind ? weatherData.wind.speed : 0;
-            var feelsLike = weatherData.main.feels_like;
 
-            // Manter a imagem local fixa, sem substituição por URL dinâmica do clima
-            console.log("ATUALIZANDO IMAGEM");
-            console.log("Condição climática da API:", weatherMain, "-", weatherDesc);
-            var weatherImageUrl = "../assets/logo-marca.jpeg";
-            console.log("URL da imagem selecionada:", weatherImageUrl);
-            
+            // Manter a imagem local fixa
             var oViewModel = this.getView().getModel("viewModel");
-            console.log("Modelo antes:", oViewModel.getProperty("/weatherImage"));
-            oViewModel.setProperty("/weatherImage", weatherImageUrl);
-            console.log("Modelo depois:", oViewModel.getProperty("/weatherImage"));
-            console.log("FIM ATUALIZAÇÃO IMAGEM");
+            oViewModel.setProperty("/weatherImage", "../assets/logo-marca.jpeg");
 
-            // Sugestões priorizam a condição climática da API (main)
-            if (weatherMain === "rain" || weatherMain === "drizzle" ||
-                weatherDesc.indexOf("chuva") !== -1 || weatherDesc.indexOf("garoa") !== -1) {
+            var bChuva =
+                weatherMain === "rain" ||
+                weatherMain === "drizzle" ||
+                weatherMain === "thunderstorm" ||
+                weatherDesc.indexOf("chuva") !== -1 ||
+                weatherDesc.indexOf("garoa") !== -1 ||
+                weatherDesc.indexOf("tempestade") !== -1;
+
+            var bSol =
+                weatherMain === "clear" ||
+                weatherDesc.indexOf("céu limpo") !== -1 ||
+                weatherDesc.indexOf("ensolarado") !== -1;
+
+            // Ícones do SAP Icon Explorer (todos válidos no font SAP-icons):
+            // https://ui5.sap.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html
+            if (bChuva) {
                 suggestions = [
-                    { icon: "sap-icon://home", text: "Melhor ficar em casa e aproveitar o aconchego", type: "Information" },
-                    { icon: "sap-icon://warm-jacket", text: "Que tal uma xícara de café quente enquanto chove", type: "Information" },
-                    { icon: "sap-icon://umbrella", text: "Se sair, não esqueça o guarda-chuva", type: "Information" },
-                    { icon: "sap-icon://home", text: "Dia ideal para ler um bom livro em casa", type: "Information" },
-                    { icon: "sap-icon://home", text: "Aproveite a chuva para um filme aconchegante", type: "Information" }
+                    { icon: "sap-icon://cloud", text: "Dia de chuva: o melhor plano é ficar em casa e aproveitar o aconchego." },
+                    { icon: "sap-icon://meal", text: "Que tal uma xícara de café quente enquanto a chuva cai lá fora?" },
+                    { icon: "sap-icon://weather-proofing", text: "Se precisar sair, leve o guarda-chuva e evite se molhar." },
+                    { icon: "sap-icon://education", text: "Ótimo momento para ler um bom livro bem confortável no sofá." },
+                    { icon: "sap-icon://home", text: "Aproveite a chuva para um filme aconchegante sem pressa." }
                 ];
-            } else if (weatherMain === "thunderstorm" || weatherDesc.indexOf("tempestade") !== -1) {
+            } else if (bSol) {
                 suggestions = [
-                    { icon: "sap-icon://home", text: "Fique em casa e evite exposição à tempestade", type: "Information" },
-                    { icon: "sap-icon://warm-jacket", text: "Momento ideal para um café e um bom livro", type: "Information" },
-                    { icon: "sap-icon://home", text: "Que tal um filme enquanto a chuva passa", type: "Information" },
-                    { icon: "sap-icon://alert", text: "Evite áreas abertas e objetos metálicos", type: "Information" },
-                    { icon: "sap-icon://home", text: "Bom horário para organizar a casa com calma", type: "Information" }
-                ];
-            } else if (weatherMain === "snow" || weatherDesc.indexOf("neve") !== -1) {
-                suggestions = [
-                    { icon: "sap-icon://home", text: "Dia frio: melhor se aquecer em casa", type: "Information" },
-                    { icon: "sap-icon://warm-jacket", text: "Aproveite para tomar algo bem quente", type: "Information" },
-                    { icon: "sap-icon://snow", text: "Se sair, vista-se bem agasalhado", type: "Information" },
-                    { icon: "sap-icon://home", text: "Que tal um filme quentinho no sofá", type: "Information" },
-                    { icon: "sap-icon://warm-jacket", text: "Prepare um chá ou chocolate quente", type: "Information" }
-                ];
-            } else if (weatherMain === "clear" || weatherDesc.indexOf("céu limpo") !== -1 || weatherDesc.indexOf("ensolarado") !== -1) {
-                if (temp >= 28) {
-                    suggestions = [
-                        { icon: "sap-icon://sunny", text: "Sol forte: ótimo dia para passear ao ar livre", type: "Success" },
-                        { icon: "sap-icon://sunny", text: "Que tal uma piscina, praia ou parque aquático", type: "Success" },
-                        { icon: "sap-icon://hydration", text: "Leve água e use protetor solar", type: "Information" },
-                        { icon: "sap-icon://walking", text: "Prefira passeios no início da manhã ou fim da tarde", type: "Information" },
-                        { icon: "sap-icon://sunny", text: "Bom dia para um sorvete ou bebida gelada", type: "Success" }
-                    ];
-                } else if (temp >= 18) {
-                    suggestions = [
-                        { icon: "sap-icon://walking", text: "Dia ensolarado: saia para passear", type: "Success" },
-                        { icon: "sap-icon://sunny", text: "Que tal um passeio no parque ou na praça", type: "Success" },
-                        { icon: "sap-icon://warm-jacket", text: "Aproveite para um café ao ar livre", type: "Success" },
-                        { icon: "sap-icon://group", text: "Bom momento para encontrar amigos fora de casa", type: "Success" },
-                        { icon: "sap-icon://sunny", text: "Leve óculos de sol e aproveite o dia", type: "Information" }
-                    ];
-                } else {
-                    suggestions = [
-                        { icon: "sap-icon://walking", text: "Solzinho agradável para uma caminhada", type: "Success" },
-                        { icon: "sap-icon://warm-jacket", text: "Leve um casaco leve para o passeio", type: "Information" },
-                        { icon: "sap-icon://sunny", text: "Bom momento para tomar sol com calma", type: "Success" },
-                        { icon: "sap-icon://warm-jacket", text: "Que tal um café em um lugar ensolarado", type: "Success" },
-                        { icon: "sap-icon://walking", text: "Aproveite para alongar as pernas ao ar livre", type: "Success" }
-                    ];
-                }
-            } else if (weatherMain === "clouds" || weatherDesc.indexOf("nuvem") !== -1 || weatherDesc.indexOf("nublado") !== -1) {
-                if (temp >= 22) {
-                    suggestions = [
-                        { icon: "sap-icon://walking", text: "Nublado, mas bom para um passeio sem sol forte", type: "Success" },
-                        { icon: "sap-icon://cloud", text: "Que tal uma caminhada leve ao ar livre", type: "Success" },
-                        { icon: "sap-icon://warm-jacket", text: "Ótimo clima para um café em uma praça", type: "Information" },
-                        { icon: "sap-icon://group", text: "Bom dia para um encontro ao ar livre", type: "Success" },
-                        { icon: "sap-icon://cloud", text: "Leve um casaco leve caso o vento aumente", type: "Information" }
-                    ];
-                } else {
-                    suggestions = [
-                        { icon: "sap-icon://cloud", text: "Dia nublado: passeio curto ou plano em casa", type: "Information" },
-                        { icon: "sap-icon://warm-jacket", text: "Que tal um café quente em um lugar aconchegante", type: "Information" },
-                        { icon: "sap-icon://walking", text: "Se sair, leve um casaco leve", type: "Information" },
-                        { icon: "sap-icon://home", text: "Bom momento para um filme ou série", type: "Information" },
-                        { icon: "sap-icon://cloud", text: "Clima ideal para atividades tranquilas", type: "Information" }
-                    ];
-                }
-            } else if (weatherMain === "mist" || weatherMain === "fog" || weatherMain === "haze" ||
-                weatherDesc.indexOf("névoa") !== -1 || weatherDesc.indexOf("neblina") !== -1) {
-                suggestions = [
-                    { icon: "sap-icon://home", text: "Visibilidade baixa: prefira ficar em casa", type: "Information" },
-                    { icon: "sap-icon://warm-jacket", text: "Bom momento para um café e descansar", type: "Information" },
-                    { icon: "sap-icon://alert", text: "Se dirigir, redobre a atenção na estrada", type: "Information" },
-                    { icon: "sap-icon://home", text: "Que tal um livro ou um filme aconchegante", type: "Information" },
-                    { icon: "sap-icon://cloud", text: "Evite passeios longos enquanto a névoa persistir", type: "Information" }
+                    { icon: "sap-icon://light-mode", text: "Dia ensolarado: saia para caminhar e aproveitar o tempo bom." },
+                    { icon: "sap-icon://map", text: "Que tal um passeio tranquilo no parque ou na praça da cidade?" },
+                    { icon: "sap-icon://soccer", text: "Bom momento para corrida, ciclismo ou um esporte ao ar livre." },
+                    { icon: "sap-icon://group", text: "Chame os amigos e marque um encontro fora de casa." },
+                    { icon: "sap-icon://alert", text: "Lembre-se de beber água e usar protetor solar ao longo do dia." }
                 ];
             } else {
-                // Fallback pela temperatura quando a condição não for reconhecida
-                if (temp >= 28) {
-                    suggestions = [
-                        { icon: "sap-icon://sunny", text: "Dia quente: aproveite para sair e se refrescar", type: "Success" },
-                        { icon: "sap-icon://hydration", text: "Beba bastante água ao longo do dia", type: "Information" },
-                        { icon: "sap-icon://walking", text: "Prefira passeios em horários mais frescos", type: "Information" },
-                        { icon: "sap-icon://sunny", text: "Que tal uma bebida gelada ao ar livre", type: "Success" },
-                        { icon: "sap-icon://sunny", text: "Use protetor solar se ficar no sol", type: "Information" }
-                    ];
-                } else if (temp <= 15) {
-                    suggestions = [
-                        { icon: "sap-icon://home", text: "Dia frio: fique mais em casa se puder", type: "Information" },
-                        { icon: "sap-icon://warm-jacket", text: "Que tal um café quente para aquecer", type: "Information" },
-                        { icon: "sap-icon://home", text: "Momento ideal para um filme aconchegante", type: "Information" },
-                        { icon: "sap-icon://warm-jacket", text: "Vista-se em camadas se precisar sair", type: "Information" },
-                        { icon: "sap-icon://home", text: "Bom dia para um chá e descanso", type: "Information" }
-                    ];
-                } else {
-                    suggestions = [
-                        { icon: "sap-icon://walking", text: "Clima agradável para um passeio", type: "Success" },
-                        { icon: "sap-icon://warm-jacket", text: "Que tal um café fora de casa", type: "Success" },
-                        { icon: "sap-icon://group", text: "Bom dia para encontrar amigos ao ar livre", type: "Success" },
-                        { icon: "sap-icon://sunny", text: "Aproveite para conhecer um lugar novo", type: "Success" },
-                        { icon: "sap-icon://walking", text: "Ótimo momento para uma caminhada leve", type: "Success" }
-                    ];
-                }
+                // Nublado / outros — cada frase com ícone
+                suggestions = [
+                    { icon: "sap-icon://cloud", text: "Nublado, mas ainda dá para aproveitar um passeio sem sol forte." },
+                    { icon: "sap-icon://meal", text: "Que tal um café quente em um lugar aconchegante neste clima?" },
+                    { icon: "sap-icon://map", text: "Uma caminhada leve ao ar livre combina bem com o tempo de hoje." },
+                    { icon: "sap-icon://home", text: "Se preferir ficar, é um ótimo momento para um filme ou série em casa." },
+                    { icon: "sap-icon://hint", text: "Clima ideal para atividades tranquilas — acompanhe a previsão do dia." }
+                ];
             }
 
-            // Refinar a última sugestão com umidade/vento quando fizer sentido
-            if (suggestions.length >= 5) {
-                if (humidity < 30 && weatherMain === "clear") {
-                    suggestions[4] = { icon: "sap-icon://hydration", text: "Ar seco: hidrate-se bem durante o passeio", type: "Information" };
-                } else if (windSpeed > 10 && (weatherMain === "clear" || weatherMain === "clouds")) {
-                    suggestions[4] = { icon: "sap-icon://wind", text: "Há vento: leve um casaco leve no passeio", type: "Information" };
-                } else if (feelsLike - temp > 3 && temp >= 25) {
-                    suggestions[4] = { icon: "sap-icon://thermometer", text: "Sensação térmica alta: evite esforço no sol", type: "Information" };
-                }
-            }
+            // Garante ícone em todas as frases
+            suggestions = suggestions.map(function (oItem) {
+                return {
+                    icon: oItem.icon || "sap-icon://hint",
+                    text: oItem.text
+                };
+            });
 
             console.log("Sugestões geradas para", weatherMain, ":", suggestions);
 
-            var oSuggestionsModel = new sap.ui.model.json.JSONModel({
-                suggestions: suggestions.slice(0, 5)
-            });
-            this.getView().setModel(oSuggestionsModel, "suggestionsModel");
+            this.getView().setModel(
+                new sap.ui.model.json.JSONModel({ suggestions: suggestions }),
+                "suggestionsModel"
+            );
         },
 
         getWeatherDescriptionInPortuguese: function(description) {
@@ -1271,129 +1188,62 @@ sap.ui.define([
             }
 
             this._oDialog = new sap.m.Dialog({
-                    title: "Mais informações",
-                    contentWidth: "500px",
-                    contentHeight: "380px",
+                title: "Guia do destino",
+                contentWidth: "520px",
+                contentHeight: "460px",
+                verticalScrolling: true,
 
-                    content: [
-                        new sap.m.VBox({
-                            items: [
+                content: [
+                    new sap.m.VBox({
+                        items: [
+                            new sap.m.Title({
+                                text: "{placesModel>/localPesquisado}",
+                                titleStyle: "H4",
+                                wrapping: true
+                            }).addStyleClass("sapUiTinyMarginBottom"),
 
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/localPesquisado",
-                                        formatter: function (value) {
-                                            return "Local pesquisado: " + (value || "Não informado");
-                                        }
-                                    }
-                                }),
+                            new sap.m.Text({
+                                text: "{placesModel>/resumo}",
+                                wrapping: true
+                            }).addStyleClass("sapUiSmallMarginBottom"),
 
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/tipoLocal",
-                                        formatter: function (value) {
-                                            return "Tipo: " + (value || "Não informado");
-                                        }
-                                    }
-                                }),
+                            new sap.m.ObjectStatus({
+                                title: "{placesModel>/localizacao/titulo}",
+                                text: "{placesModel>/localizacao/texto}",
+                                icon: "{placesModel>/localizacao/icone}",
+                                state: "Information"
+                            }).addStyleClass("sapUiSmallMarginBottom"),
 
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/pais",
-                                        formatter: function (value) {
-                                            return "País: " + (value || "—");
-                                        }
-                                    }
-                                }),
+                            new sap.m.Title({
+                                text: "O que fazer por aqui",
+                                titleStyle: "H5"
+                            }).addStyleClass("sapUiTinyMarginBottom"),
 
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/estado",
-                                        formatter: function (value) {
-                                            return "Estado: " + (value || "—");
-                                        }
-                                    }
-                                }),
+                            new sap.m.List({
+                                noDataText: "Nenhum tópico disponível",
+                                items: {
+                                    path: "placesModel>/topicos",
+                                    template: new sap.m.StandardListItem({
+                                        title: "{placesModel>titulo}",
+                                        description: "{placesModel>texto}",
+                                        icon: "{placesModel>icone}",
+                                        info: "{placesModel>nome}",
+                                        wrapping: true,
+                                        type: "Inactive"
+                                    })
+                                }
+                            })
+                        ]
+                    }).addStyleClass("sapUiSmallMargin")
+                ],
 
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/capital",
-                                        formatter: function (value) {
-                                            return "Capital do estado: " + (value || "—");
-                                        }
-                                    }
-                                }),
-
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/museums/0/nome",
-                                        formatter: function (value) {
-                                            if (!value) {
-                                                return "Museu mais próximo: Não encontrado";
-                                            }
-                                            return "Museu mais próximo: " + value;
-                                        }
-                                    }
-                                }),
-
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/stadiums/0/nome",
-                                        formatter: function (value) {
-                                            if (!value) {
-                                                return "Estádio mais próximo: Não encontrado";
-                                            }
-                                            return "Estádio mais próximo: " + value;
-                                        }
-                                    }
-                                }),
-
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/parks/0/nome",
-                                        formatter: function (value) {
-                                            if (!value) {
-                                                return "Parque mais próximo: Não encontrado";
-                                            }
-                                            return "Parque mais próximo: " + value;
-                                        }
-                                    }
-                                }),
-
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/attractions/0/nome",
-                                        formatter: function (value) {
-                                            if (!value) {
-                                                return "Atração: Não encontrada";
-                                            }
-                                            return "Atração: " + value;
-                                        }
-                                    }
-                                }),
-
-                                new sap.m.Text({
-                                    text: {
-                                        path: "placesModel>/monuments/0/nome",
-                                        formatter: function (value) {
-                                            if (!value) {
-                                                return "Monumento: Não encontrado";
-                                            }
-                                            return "Monumento: " + value;
-                                        }
-                                    }
-                                })
-                            ]
-                        }).addStyleClass("sapUiSmallMargin")
-                    ],
-
-                    beginButton: new sap.m.Button({
-                        text: "Fechar",
-                        press: function () {
-                            this._oDialog.close();
-                        }.bind(this)
-                    })
-                });
+                beginButton: new sap.m.Button({
+                    text: "Fechar",
+                    press: function () {
+                        this._oDialog.close();
+                    }.bind(this)
+                })
+            });
 
             this.getView().addDependent(this._oDialog);
             this._oDialog.open();
