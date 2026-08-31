@@ -13,6 +13,7 @@
         <customHeader>
             <OverflowToolbar id="view2HeaderToolbar">
                 <core:Fragment
+                    id="view2PageNavFragment"
                     fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
                     type="XML"/>
             </OverflowToolbar>

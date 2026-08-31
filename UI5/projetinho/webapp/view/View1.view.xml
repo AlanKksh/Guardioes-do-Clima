@@ -16,6 +16,7 @@
         <customHeader>
             <OverflowToolbar id="headerToolbar">
                 <core:Fragment
+                    id="pageNavFragment"
                     fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
                     type="XML"/>
 
@@ -161,16 +162,16 @@
                                 <ObjectStatus text="{weatherModel>/wind/speed} km/h" state="None" icon="sap-icon://arrow-left" class="sapUiTinyMarginTop" id="objectStatusClimateWind"/>
                             </VBox>
                             <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateHumidity">
-                                <Text text="Umidade" class=" sapUiTinyMarginEnd"/>
-                                <ObjectStatus text="{weatherModel>/main/humidity}%" state="None" class="sapUiTinyMarginTop"/>
+                                <Text text="Umidade" class=" sapUiTinyMarginEnd" id="textClimateHumidity"/>
+                                <ObjectStatus text="{weatherModel>/main/humidity}%" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateHumidity"/>
                             </VBox>
                             <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateVisibility">
-                                <Text text="Visibilidade" class=" sapUiTinyMarginEnd"/>
-                                <ObjectStatus text="{weatherModel>/visibility} km" state="None" class="sapUiTinyMarginTop"/>
+                                <Text text="Visibilidade" class=" sapUiTinyMarginEnd" id="textClimateVisibility"/>
+                                <ObjectStatus text="{weatherModel>/visibility} km" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateVisibility"/>
                             </VBox>
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
-                                <Text text="Pressão" class=" sapUiTinyMarginEnd"/>
-                                <ObjectStatus text="{weatherModel>/main/pressure} mb" state="None" class="sapUiTinyMarginTop"/>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimatePressureMb">
+                                <Text text="Pressão" class=" sapUiTinyMarginEnd" id="textClimatePressureMb"/>
+                                <ObjectStatus text="{weatherModel>/main/pressure} mb" state="None" class="sapUiTinyMarginTop" id="objectStatusClimatePressureMb"/>
                             </VBox>
                             <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateDewPoint">
                                 <Text text="Ponto de orvalho" class=" sapUiTinyMarginEnd" id="textClimateDewPoint"/>
@@ -209,22 +210,23 @@
 
             <Panel id="PanelDayNow" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L2 M3 S6"/>
+                <layout:GridData span="L2 M3 S6" id="gridDataPanelDayNow"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Hoje" titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween" class="todayPanelContent">
-                        <HBox alignItems="Center" class="todayPanelIconTemp">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDayNow">
+                    <Title text="Hoje" titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDayNow"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" class="todayPanelContent" id="hBoxPanelDayNow">
+                        <HBox alignItems="Center" class="todayPanelIconTemp" id="hBoxPanelDayNowIconTemp">
                             <core:Icon
                                 src="{weatherModel>/weatherIcon}"
                                 size="2rem"
                                 color="{weatherModel>/weatherColor}"
-                                class="sapUiTinyMarginEnd">
+                                class="sapUiTinyMarginEnd"
+                                id="iconPanelDayNow">
                             </core:Icon>
-                            <Title text="{weatherModel>/main/temp}°" titleStyle="H4"/>
+                            <Title text="{weatherModel>/main/temp}°" titleStyle="H4" id="titlePanelDayNowTemp"/>
                         </HBox>
-                          <Text text="{weatherModel>/dynamicText}" class="sapUiSmallText hide-on-small-medium"/>
+                          <Text text="{weatherModel>/dynamicText}" class="sapUiSmallText hide-on-small-medium" id="textPanelDayNow"/>
                     </HBox>
                    
                 </VBox>
@@ -259,20 +261,21 @@
 
             <Panel id="PanelDay2" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay2"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Ter." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay2">
+                    <Title text="Ter." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay2"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay2">
                         <core:Icon
                             src="{= ${forecastModel>/1/icon} || 'sap-icon://light-mode'}"
                             size="2rem"
                             color="{= ${forecastModel>/1/weatherColor} || '#FFA500'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay2">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/1/temperature} || '26'}°" titleStyle="H4" />
+                        <VBox alignItems="End" id="vBoxPanelDay2Temp">
+                            <Title text="{= ${forecastModel>/1/temperature} || '26'}°" titleStyle="H4" id="titlePanelDay2Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -281,20 +284,21 @@
 
             <Panel id="PanelDay3" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay3"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Qua." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay3">
+                    <Title text="Qua." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay3"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay3">
                         <core:Icon
                             src="{= ${forecastModel>/2/icon} || 'sap-icon://light-mode'}"
                             size="2rem"
                             color="{= ${forecastModel>/2/weatherColor} || '#FFA500'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay3">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/2/temperature} || '27'}°" titleStyle="H4"/>
+                        <VBox alignItems="End" id="vBoxPanelDay3Temp">
+                            <Title text="{= ${forecastModel>/2/temperature} || '27'}°" titleStyle="H4" id="titlePanelDay3Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -303,20 +307,21 @@
 
             <Panel id="PanelDay4" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay4"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Qui." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay4">
+                    <Title text="Qui." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay4"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay4">
                         <core:Icon
                             src="{= ${forecastModel>/3/icon} || 'sap-icon://light-mode'}"
                             size="2rem"
                             color="{= ${forecastModel>/3/weatherColor} || '#FFA500'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay4">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/3/temperature} || '24'}°" titleStyle="H4" />
+                        <VBox alignItems="End" id="vBoxPanelDay4Temp">
+                            <Title text="{= ${forecastModel>/3/temperature} || '24'}°" titleStyle="H4" id="titlePanelDay4Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -325,20 +330,21 @@
 
             <Panel id="PanelDay5" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay5"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Sex." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay5">
+                    <Title text="Sex." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay5"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay5">
                         <core:Icon
                             src="{= ${forecastModel>/4/icon} || 'sap-icon://cloud'}"
                             size="2rem"
                             color="{= ${forecastModel>/4/weatherColor} || '#0070F3'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay5">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/4/temperature} || '18'}°" titleStyle="H4" />
+                        <VBox alignItems="End" id="vBoxPanelDay5Temp">
+                            <Title text="{= ${forecastModel>/4/temperature} || '18'}°" titleStyle="H4" id="titlePanelDay5Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -347,20 +353,21 @@
 
             <Panel id="PanelDay6" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay6"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Sáb." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay6">
+                    <Title text="Sáb." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay6"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay6">
                         <core:Icon
                             src="{= ${forecastModel>/5/icon} || 'sap-icon://cloud'}"
                             size="2rem"
                             color="{= ${forecastModel>/5/weatherColor} || '#0070F3'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay6">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/5/temperature} || '17'}°" titleStyle="H4" />
+                        <VBox alignItems="End" id="vBoxPanelDay6Temp">
+                            <Title text="{= ${forecastModel>/5/temperature} || '17'}°" titleStyle="H4" id="titlePanelDay6Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -369,20 +376,21 @@
 
             <Panel id="PanelDay7" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay7"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Dom." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay7">
+                    <Title text="Dom." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay7"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay7">
                         <core:Icon
                             src="{= ${forecastModel>/6/icon} || 'sap-icon://light-mode'}"
                             size="2rem"
                             color="{= ${forecastModel>/6/weatherColor} || '#FFA500'}"
-                            class="sapUiTinyMarginEnd">
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay7">
                         </core:Icon>
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/6/temperature} || '20'}°" titleStyle="H4" />
+                        <VBox alignItems="End" id="vBoxPanelDay7Temp">
+                            <Title text="{= ${forecastModel>/6/temperature} || '20'}°" titleStyle="H4" id="titlePanelDay7Temp"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -465,7 +473,7 @@
 
             <VBox id="imageWeatherVBox" width="100%">
                 <layoutData>
-                    <layout:GridData span="L3 M12 S12"/>
+                    <layout:GridData span="L3 M12 S12" id="gridDataImageWeather"/>
                 </layoutData>
                 <Image 
                     id="weatherImage"
