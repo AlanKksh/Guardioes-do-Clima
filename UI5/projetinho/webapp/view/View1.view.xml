@@ -124,46 +124,47 @@
             
             <Panel id="climatePanel" class="limiterPanel " height="24rem">
                 <layoutData>
-                    <layout:GridData span="L5 M12 S12"/>
+                    <layout:GridData span="L5 M12 S12" id="gridDataClimatePanel"/>
                 </layoutData>
                 <content>
                     <VBox id="climateVBox" class="sapUiMediumMargin sapUiSmallMarginTopS">
-                        <HBox justifyContent="SpaceBetween" alignItems="Start">
+                        <HBox justifyContent="SpaceBetween" alignItems="Start" id="hBoxClimateTitle">
                             <Title id="climateTitle" text="Clima Atual" titleStyle="H4" />
-                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact" press=".onVerMais"/>
+                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact" press=".onVerMais" id="btnVerMais"/>
                         </HBox>
                             <Text id="currentTimeText" text="{/currentTime}" />
                             
-                        <HBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
+                        <HBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom" id="hBoxClimateIconTemp">
                             <core:Icon
                                 src="{weatherModel>/weatherIcon}"
                                 size="4rem"
                                 color="{weatherModel>/weatherColor}"
-                                class="sapUiMediumMarginEnd">
+                                class="sapUiMediumMarginEnd"
+                                id="iconClimate">
                             </core:Icon>
 
-                                <Title text="{weatherModel>/main/temp}°C" titleStyle="H1" class="sapUiTinyMarginBottom"/>
-                            <VBox class="sapUiSmallMarginBegin weatherConditionBox">
-                                <Title text="{weatherModel>/weatherDescriptionPT}" titleStyle="H4" class="sapUiTinyMarginBottom weatherConditionTitle"/>
-                                <Text text="Sensação térmica {weatherModel>/main/feels_like}°" class="sapUiSmallText weatherConditionText"/>
+                                <Title text="{weatherModel>/main/temp}°C" titleStyle="H1" class="sapUiTinyMarginBottom" id="titleClimateTemp"/>
+                            <VBox class="sapUiSmallMarginBegin weatherConditionBox" id="vBoxClimateCondition">
+                                <Title text="{weatherModel>/weatherDescriptionPT}" titleStyle="H4" class="sapUiTinyMarginBottom weatherConditionTitle" id="titleClimateDescription"/>
+                                <Text text="Sensação térmica {weatherModel>/main/feels_like}°" class="sapUiSmallText weatherConditionText" id="textClimateFeelsLike"/>
                             </VBox>
                         </HBox>
-                            <Text text="{weatherModel>/weatherSummary}" class="sapUiSmallMarginTop sapUiMediumMarginBottom weatherSummaryText"/>
+                            <Text text="{weatherModel>/weatherSummary}" class="sapUiSmallMarginTop sapUiMediumMarginBottom weatherSummaryText" id="textClimateSummary"/>
 
-                        <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap">
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
-                                <Text text="Qualidade do ar" class=" sapUiTinyMarginEnd"/>
-                                <ObjectStatus text="{weatherModel>/main/pressure}" state="Warning" icon="sap-icon://circle" class="sapUiTinyMarginTop"/>
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap" id="hBoxClimateInfo">
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimatePressure">
+                                <Text text="Qualidade do ar" class=" sapUiTinyMarginEnd" id="textClimatePressure"/>
+                                <ObjectStatus text="{weatherModel>/main/pressure}" state="Warning" icon="sap-icon://circle" class="sapUiTinyMarginTop" id="objectStatusClimatePressure"/>
                             </VBox>
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
-                                <Text text="Vento" class=" sapUiTinyMarginEnd" />
-                                <ObjectStatus text="{weatherModel>/wind/speed} km/h" state="None" icon="sap-icon://arrow-left" class="sapUiTinyMarginTop"/>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateWind">
+                                <Text text="Vento" class=" sapUiTinyMarginEnd" id="textClimateWind"/>
+                                <ObjectStatus text="{weatherModel>/wind/speed} km/h" state="None" icon="sap-icon://arrow-left" class="sapUiTinyMarginTop" id="objectStatusClimateWind"/>
                             </VBox>
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateHumidity">
                                 <Text text="Umidade" class=" sapUiTinyMarginEnd"/>
                                 <ObjectStatus text="{weatherModel>/main/humidity}%" state="None" class="sapUiTinyMarginTop"/>
                             </VBox>
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateVisibility">
                                 <Text text="Visibilidade" class=" sapUiTinyMarginEnd"/>
                                 <ObjectStatus text="{weatherModel>/visibility} km" state="None" class="sapUiTinyMarginTop"/>
                             </VBox>
@@ -171,9 +172,9 @@
                                 <Text text="Pressão" class=" sapUiTinyMarginEnd"/>
                                 <ObjectStatus text="{weatherModel>/main/pressure} mb" state="None" class="sapUiTinyMarginTop"/>
                             </VBox>
-                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
-                                <Text text="Ponto de orvalho" class=" sapUiTinyMarginEnd"/>
-                                <ObjectStatus text="{weatherModel>/dewPoint}°" state="None" class="sapUiTinyMarginTop"/>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateDewPoint">
+                                <Text text="Ponto de orvalho" class=" sapUiTinyMarginEnd" id="textClimateDewPoint"/>
+                                <ObjectStatus text="{weatherModel>/dewPoint}°" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateDewPoint"/>
                             </VBox>
                         </HBox>
                     </VBox>            
@@ -232,22 +233,23 @@
 
             <Panel id="PanelDay1" height="8rem" width="100%">
             <layoutData>
-                <layout:GridData span="L1 M3 S6"/>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay1"/>
             </layoutData>
             <content>
-                <VBox class="sapUiSmallMargin">
-                    <Title text="Seg." titleStyle="H6" class="sapUiTinyMarginBottom"/>
-                    <HBox alignItems="Center" justifyContent="SpaceBetween">
-                        <HBox alignItems="Center" class="forecastPanelIconTemp">
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay1">
+                    <Title text="Seg." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay1"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay1">
+                        <HBox alignItems="Center" class="forecastPanelIconTemp" id="hBoxPanelDay1IconTemp">
                             <core:Icon
                                 src="{= ${forecastModel>/0/icon} || 'sap-icon://light-mode'}"
                                 size="2rem"
                                 color="{= ${forecastModel>/0/weatherColor} || '#FFA500'}"
-                                class="sapUiTinyMarginEnd">
+                                class="sapUiTinyMarginEnd" 
+                                id="iconPanelDay1">
                             </core:Icon>
                            
-                        <VBox alignItems="End">
-                            <Title text="{= ${forecastModel>/0/temperature} || '26'}°" titleStyle="H4" class="forecastPanelTemp"/>
+                        <VBox alignItems="End" id="vBoxPanelDay1Temp">
+                            <Title text="{= ${forecastModel>/0/temperature} || '26'}°" titleStyle="H4" class="forecastPanelTemp" id="titlePanelDay1Temp"/>
                         </VBox>
                         </HBox> 
                     </HBox>
