@@ -17,13 +17,13 @@ sap.ui.define([], function () {
     var oFetchPromise = null;
 
     var TEMPERATURE_LEGEND = [
-        { max: 0, color: "#6366f1", label: "Frio intenso" },
-        { max: 10, color: "#3b82f6", label: "Frio" },
+        { max: 0, color: "#1e40af", label: "Frio intenso" },
+        { max: 10, color: "#60a5fa", label: "Frio" },
         { max: 20, color: "#22c55e", label: "Agradável" },
-        { max: 25, color: "#eab308", label: "Quente" },
-        { max: 30, color: "#f97316", label: "Muito quente" },
-        { max: 35, color: "#ef4444", label: "Calor" },
-        { max: Infinity, color: "#a855f7", label: "Extremo" }
+        { max: 25, color: "#facc15", label: "Quente" },
+        { max: 30, color: "#d97706", label: "Muito quente" },
+        { max: 35, color: "#f97316", label: "Calor" },
+        { max: Infinity, color: "#dc2626", label: "Extremo" }
     ];
 
     function getColorForTemp(fTemp) {

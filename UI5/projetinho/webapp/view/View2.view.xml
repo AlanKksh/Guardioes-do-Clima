@@ -57,11 +57,11 @@
                                 <content>
                                     <VBox id="view2LegendList" class="view2LegendList">
                                         <HBox id="legendItemColdExtreme" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconColdExtreme" src="sap-icon://circle-task-2" color="#6366f1" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconColdExtreme" src="sap-icon://circle-task-2" color="#1e40af" class="view2LegendIcon"/>
                                             <Text id="legendTextColdExtreme" text="&lt; 0°C — Frio intenso"/>
                                         </HBox>
                                         <HBox id="legendItemCold" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconCold" src="sap-icon://circle-task-2" color="#3b82f6" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconCold" src="sap-icon://circle-task-2" color="#60a5fa" class="view2LegendIcon"/>
                                             <Text id="legendTextCold" text="0–10°C — Frio"/>
                                         </HBox>
                                         <HBox id="legendItemMild" alignItems="Center" class="view2LegendItem">
@@ -69,19 +69,19 @@
                                             <Text id="legendTextMild" text="10–20°C — Agradável"/>
                                         </HBox>
                                         <HBox id="legendItemWarm" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconWarm" src="sap-icon://circle-task-2" color="#eab308" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconWarm" src="sap-icon://circle-task-2" color="#facc15" class="view2LegendIcon"/>
                                             <Text id="legendTextWarm" text="20–25°C — Quente"/>
                                         </HBox>
                                         <HBox id="legendItemHot" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconHot" src="sap-icon://circle-task-2" color="#f97316" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconHot" src="sap-icon://circle-task-2" color="#d97706" class="view2LegendIcon"/>
                                             <Text id="legendTextHot" text="25–30°C — Muito quente"/>
                                         </HBox>
                                         <HBox id="legendItemVeryHot" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconVeryHot" src="sap-icon://circle-task-2" color="#ef4444" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconVeryHot" src="sap-icon://circle-task-2" color="#f97316" class="view2LegendIcon"/>
                                             <Text id="legendTextVeryHot" text="30–35°C — Calor"/>
                                         </HBox>
                                         <HBox id="legendItemExtreme" alignItems="Center" class="view2LegendItem">
-                                            <core:Icon id="legendIconExtreme" src="sap-icon://circle-task-2" color="#a855f7" class="view2LegendIcon"/>
+                                            <core:Icon id="legendIconExtreme" src="sap-icon://circle-task-2" color="#dc2626" class="view2LegendIcon"/>
                                             <Text id="legendTextExtreme" text="&gt; 35°C — Extremo"/>
                                         </HBox>
                                     </VBox>
