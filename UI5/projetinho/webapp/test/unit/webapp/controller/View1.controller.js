@@ -68,4 +68,52 @@ sap.ui.define([
 		assert.strictEqual(aPoints.length, 7);
 	});
 
+	QUnit.test("_getTodayForecastsWithLocalDate usa o primeiro dia quando hoje não tem slots", function (assert) {
+		var oController = new Controller();
+		var timezoneOffset = -10800;
+		var locationNow = oController._getLocationCurrentDate(timezoneOffset);
+		var tomorrow = new Date(locationNow.getTime());
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		tomorrow.setHours(9, 0, 0, 0);
+
+		var utcTime = tomorrow.getTime() - timezoneOffset * 1000;
+		var dt = Math.floor((utcTime - new Date(utcTime).getTimezoneOffset() * 60000) / 1000);
+		var forecasts = [{
+			dt: dt,
+			main: { temp: 24 }
+		}];
+
+		var aNormalized = oController._getTodayForecastsWithLocalDate(forecasts, timezoneOffset);
+
+		assert.strictEqual(aNormalized.length, 1);
+		assert.strictEqual(aNormalized[0].forecast.main.temp, 24);
+	});
+
+	QUnit.test("buildHourlyChartPoints preenche temperaturas com previsões do dia disponível", function (assert) {
+		var oController = new Controller();
+		var timezoneOffset = -10800;
+		var locationNow = oController._getLocationCurrentDate(timezoneOffset);
+		var tomorrow = new Date(locationNow.getTime());
+		tomorrow.setDate(tomorrow.getDate() + 1);
+
+		var targetHours = [7, 9, 12, 15, 17, 20, 0];
+		var forecasts = targetHours.map(function (hour) {
+			var localDate = new Date(tomorrow.getTime());
+			localDate.setHours(hour, 0, 0, 0);
+			var utcTime = localDate.getTime() - timezoneOffset * 1000;
+			var dt = Math.floor((utcTime - new Date(utcTime).getTimezoneOffset() * 60000) / 1000);
+			return {
+				dt: dt,
+				main: { temp: 20 + hour / 10 }
+			};
+		});
+
+		var aPoints = oController.buildHourlyChartPoints(forecasts, timezoneOffset);
+
+		assert.strictEqual(aPoints.length, 7);
+		assert.ok(aPoints.every(function (point) {
+			return point.temperature > 0;
+		}));
+	});
+
 });

@@ -227,18 +227,38 @@ sap.ui.define([
             });
         },
 
+        _mapForecastsToLocalDate: function(forecasts, timezoneOffset) {
+            return (forecasts || []).map(function (forecast) {
+                var localDate = this._convertToLocationDate(forecast.dt, timezoneOffset);
+                return {
+                    forecast: forecast,
+                    date: localDate,
+                    hour: localDate.getHours()
+                };
+            }.bind(this));
+        },
+
         _getTodayForecastsWithLocalDate: function(forecasts, timezoneOffset) {
-            const locationNow = this._getLocationCurrentDate(timezoneOffset);
-            return (forecasts || [])
-                .map(forecast => {
-                    const localDate = this._convertToLocationDate(forecast.dt, timezoneOffset);
-                    return {
-                        forecast: forecast,
-                        date: localDate,
-                        hour: localDate.getHours()
-                    };
-                })
-                .filter(item => this._isSameDay(item.date, locationNow));
+            var normalizedForecasts = this._mapForecastsToLocalDate(forecasts, timezoneOffset);
+
+            if (!normalizedForecasts.length) {
+                return [];
+            }
+
+            var locationNow = this._getLocationCurrentDate(timezoneOffset);
+            var todayForecasts = normalizedForecasts.filter(function (item) {
+                return this._isSameDay(item.date, locationNow);
+            }.bind(this));
+
+            if (todayForecasts.length) {
+                return todayForecasts;
+            }
+
+            // Tarde/noite: a API pode não ter mais slots para "hoje" — usa o 1º dia disponível.
+            var firstDay = normalizedForecasts[0].date;
+            return normalizedForecasts.filter(function (item) {
+                return this._isSameDay(item.date, firstDay);
+            }.bind(this));
         },
 
         _calculateAverageTemperature: function(items) {
@@ -406,6 +426,10 @@ sap.ui.define([
                 })
                 .then(res => res.json())
                 .then(data => {
+                    if (!data || !Array.isArray(data.list) || !data.list.length) {
+                        throw new Error((data && data.message) || "Previsão horária indisponível.");
+                    }
+
                     const forecasts = data.list;
                     const dailyForecasts = [];
 
@@ -789,6 +813,10 @@ sap.ui.define([
                 })
                 .then(res => res.json())
                 .then(data => {
+                    if (!data || !Array.isArray(data.list) || !data.list.length) {
+                        throw new Error((data && data.message) || "Previsão horária indisponível.");
+                    }
+
                     const forecasts = data.list;
                     const dailyForecasts = [];
 
