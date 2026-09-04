@@ -1,0 +1,508 @@
+<mvc:View
+    controllerName="alan.projetos.projetinho.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:vbm="sap.ui.vbm"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    displayBlock="true">
+    
+    <Page id="mainPage"
+          showNavButton="false"
+          class="sapUiResponsiveContentPadding no-page-title">
+        <customHeader>
+            <OverflowToolbar id="headerToolbar">
+                <core:Fragment
+                    id="pageNavFragment"
+                    fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
+                    type="XML"/>
+
+                <ToolbarSpacer id="toolbarSpacerLeft"/>
+
+                <Label 
+                    id="titleLugares"
+                    text="Lugares Populares:" 
+                    design="Bold">
+                    
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataTitle" priority="High"/>
+                    </layoutData>
+                </Label>
+
+                <Button 
+                    id="btnSaoPaulo"
+                    text="São Paulo 14°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToSaoPaulo">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSaoPaulo" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <Button 
+                    id="btnRioGrandeDoSul"
+                    text="Rio Grande Do Sul 18°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToRioGrandeDoSul">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataRioGrandeDoSul" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <Button 
+                    id="btnRio"
+                    text="Rio de Janeiro 21°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToRio">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataRio" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <Button 
+                    id="btnBrasilia"
+                    text="Brasília 15°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToBrasilia">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataBrasilia" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <Button 
+                    id="btnSalvador"
+                    text="Salvador 25°" 
+                    type="Transparent" 
+                    icon="sap-icon://building"
+                    press="onNavigateToSalvador">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSalvador" priority="Low"/>
+                    </layoutData>
+                </Button>
+
+                <ToolbarSeparator id="toolbarSeparator">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataSeparator" priority="Low"/>
+                    </layoutData>
+                </ToolbarSeparator>
+
+                <Input 
+                    id="cityInput" 
+                    width="9rem" 
+                    placeholder="Digite uma cidade..." 
+                    submit="onButtonPress">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataInput" priority="NeverOverflow"/>
+                    </layoutData>
+                </Input>
+
+                <Button 
+                    id="btnBuscar" 
+                    icon="sap-icon://search" 
+                    text="Buscar" 
+                    type="Ghost" 
+                    press="onButtonPress">
+                    <layoutData>
+                        <OverflowToolbarLayoutData id="layoutDataBtnBuscar" priority="NeverOverflow"/>
+                    </layoutData>
+                </Button>
+            </OverflowToolbar>
+        </customHeader>
+    
+        <layout:Grid 
+            id="climateGrid"
+            defaultSpan="L12 M12 S12" 
+            containerQuery="true"
+            hSpacing="1"
+            vSpacing="1">
+            
+            <Panel id="climatePanel" class="limiterPanel " height="24rem">
+                <layoutData>
+                    <layout:GridData span="L5 M12 S12" id="gridDataClimatePanel"/>
+                </layoutData>
+                <content>
+                    <VBox id="climateVBox" class="sapUiMediumMargin sapUiSmallMarginTopS">
+                        <HBox justifyContent="SpaceBetween" alignItems="Start" id="hBoxClimateTitle">
+                            <Title id="climateTitle" text="Clima Atual" titleStyle="H4" />
+                            <Button text="Ver Mais" type="Emphasized" class="sapUiSizeCompact" press=".onVerMais" id="btnVerMais"/>
+                        </HBox>
+                            <Text id="currentTimeText" text="{/currentTime}" />
+                            
+                        <HBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom" id="hBoxClimateIconTemp">
+                            <core:Icon
+                                src="{weatherModel>/weatherIcon}"
+                                size="4rem"
+                                color="{weatherModel>/weatherColor}"
+                                class="sapUiMediumMarginEnd"
+                                id="iconClimate">
+                            </core:Icon>
+
+                                <Title text="{weatherModel>/main/temp}°C" titleStyle="H1" class="sapUiTinyMarginBottom" id="titleClimateTemp"/>
+                            <VBox class="sapUiSmallMarginBegin weatherConditionBox" id="vBoxClimateCondition">
+                                <Title text="{weatherModel>/weatherDescriptionPT}" titleStyle="H4" class="sapUiTinyMarginBottom weatherConditionTitle" id="titleClimateDescription"/>
+                                <Text text="Sensação térmica {weatherModel>/main/feels_like}°" class="sapUiSmallText weatherConditionText" id="textClimateFeelsLike"/>
+                            </VBox>
+                        </HBox>
+                            <Text text="{weatherModel>/weatherSummary}" class="sapUiSmallMarginTop sapUiMediumMarginBottom weatherSummaryText" id="textClimateSummary"/>
+
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap" id="hBoxClimateInfo">
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimatePressure">
+                                <Text text="Qualidade do ar" class=" sapUiTinyMarginEnd" id="textClimatePressure"/>
+                                <ObjectStatus text="{weatherModel>/main/pressure}" state="Warning" icon="sap-icon://circle" class="sapUiTinyMarginTop" id="objectStatusClimatePressure"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateWind">
+                                <Text text="Vento" class=" sapUiTinyMarginEnd" id="textClimateWind"/>
+                                <ObjectStatus text="{weatherModel>/wind/speed} km/h" state="None" icon="sap-icon://arrow-left" class="sapUiTinyMarginTop" id="objectStatusClimateWind"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateHumidity">
+                                <Text text="Umidade" class=" sapUiTinyMarginEnd" id="textClimateHumidity"/>
+                                <ObjectStatus text="{weatherModel>/main/humidity}%" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateHumidity"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateVisibility">
+                                <Text text="Visibilidade" class=" sapUiTinyMarginEnd" id="textClimateVisibility"/>
+                                <ObjectStatus text="{weatherModel>/visibility} km" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateVisibility"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimatePressureMb">
+                                <Text text="Pressão" class=" sapUiTinyMarginEnd" id="textClimatePressureMb"/>
+                                <ObjectStatus text="{weatherModel>/main/pressure} mb" state="None" class="sapUiTinyMarginTop" id="objectStatusClimatePressureMb"/>
+                            </VBox>
+                            <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom" id="vBoxClimateDewPoint">
+                                <Text text="Ponto de orvalho" class=" sapUiTinyMarginEnd" id="textClimateDewPoint"/>
+                                <ObjectStatus text="{weatherModel>/dewPoint}°" state="None" class="sapUiTinyMarginTop" id="objectStatusClimateDewPoint"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>            
+                </content>
+            </Panel>
+            
+            <VBox id="mapVBox">
+                <layoutData>
+                    <layout:GridData id="mapGridData" span="L7 M12 S12"/>
+                </layoutData>
+                <vbm:GeoMap 
+                    id="geoMap"
+                    width="100%"
+                    height="24rem"
+                    centerPosition="{viewModel>/long};{viewModel>/lat};0"
+                    zoomlevel="10">
+                    <vbm:Spots id="mapSpots">
+                        <vbm:Spot
+                            id="locationSpot"
+                            position="{viewModel>/long};{viewModel>/lat};0"/>
+                    </vbm:Spots>
+                </vbm:GeoMap>
+            </VBox>
+        </layout:Grid>
+
+        <layout:Grid
+            id="suggestionsGrid"
+            defaultSpan="L12 M12 S12" 
+            containerQuery="true"
+            hSpacing="1"
+            vSpacing="1">
+
+            <Panel id="PanelDayNow" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L2 M3 S6" id="gridDataPanelDayNow"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDayNow">
+                    <Title text="Hoje" titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDayNow"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" class="todayPanelContent" id="hBoxPanelDayNow">
+                        <HBox alignItems="Center" class="todayPanelIconTemp" id="hBoxPanelDayNowIconTemp">
+                            <core:Icon
+                                src="{weatherModel>/weatherIcon}"
+                                size="2rem"
+                                color="{weatherModel>/weatherColor}"
+                                class="sapUiTinyMarginEnd"
+                                id="iconPanelDayNow">
+                            </core:Icon>
+                            <Title text="{weatherModel>/main/temp}°" titleStyle="H4" id="titlePanelDayNowTemp"/>
+                        </HBox>
+                          <Text text="{weatherModel>/dynamicText}" class="sapUiSmallText hide-on-small-medium" id="textPanelDayNow"/>
+                    </HBox>
+                   
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay1" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay1"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay1">
+                    <Title text="Seg." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay1"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay1">
+                        <HBox alignItems="Center" class="forecastPanelIconTemp" id="hBoxPanelDay1IconTemp">
+                            <core:Icon
+                                src="{= ${forecastModel>/0/icon} || 'sap-icon://light-mode'}"
+                                size="2rem"
+                                color="{= ${forecastModel>/0/weatherColor} || '#FFA500'}"
+                                class="sapUiTinyMarginEnd" 
+                                id="iconPanelDay1">
+                            </core:Icon>
+                           
+                        <VBox alignItems="End" id="vBoxPanelDay1Temp">
+                            <Title text="{= ${forecastModel>/0/temperature} || '26'}°" titleStyle="H4" class="forecastPanelTemp" id="titlePanelDay1Temp"/>
+                        </VBox>
+                        </HBox> 
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay2" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay2"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay2">
+                    <Title text="Ter." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay2"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay2">
+                        <core:Icon
+                            src="{= ${forecastModel>/1/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/1/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay2">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay2Temp">
+                            <Title text="{= ${forecastModel>/1/temperature} || '26'}°" titleStyle="H4" id="titlePanelDay2Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay3" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay3"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay3">
+                    <Title text="Qua." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay3"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay3">
+                        <core:Icon
+                            src="{= ${forecastModel>/2/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/2/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay3">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay3Temp">
+                            <Title text="{= ${forecastModel>/2/temperature} || '27'}°" titleStyle="H4" id="titlePanelDay3Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay4" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay4"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay4">
+                    <Title text="Qui." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay4"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay4">
+                        <core:Icon
+                            src="{= ${forecastModel>/3/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/3/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay4">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay4Temp">
+                            <Title text="{= ${forecastModel>/3/temperature} || '24'}°" titleStyle="H4" id="titlePanelDay4Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay5" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay5"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay5">
+                    <Title text="Sex." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay5"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay5">
+                        <core:Icon
+                            src="{= ${forecastModel>/4/icon} || 'sap-icon://cloud'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/4/weatherColor} || '#0070F3'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay5">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay5Temp">
+                            <Title text="{= ${forecastModel>/4/temperature} || '18'}°" titleStyle="H4" id="titlePanelDay5Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay6" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay6"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay6">
+                    <Title text="Sáb." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay6"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay6">
+                        <core:Icon
+                            src="{= ${forecastModel>/5/icon} || 'sap-icon://cloud'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/5/weatherColor} || '#0070F3'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay6">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay6Temp">
+                            <Title text="{= ${forecastModel>/5/temperature} || '17'}°" titleStyle="H4" id="titlePanelDay6Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="PanelDay7" height="8rem" width="100%">
+            <layoutData>
+                <layout:GridData span="L1 M3 S6" id="gridDataPanelDay7"/>
+            </layoutData>
+            <content>
+                <VBox class="sapUiSmallMargin" id="vBoxPanelDay7">
+                    <Title text="Dom." titleStyle="H6" class="sapUiTinyMarginBottom" id="titlePanelDay7"/>
+                    <HBox alignItems="Center" justifyContent="SpaceBetween" id="hBoxPanelDay7">
+                        <core:Icon
+                            src="{= ${forecastModel>/6/icon} || 'sap-icon://light-mode'}"
+                            size="2rem"
+                            color="{= ${forecastModel>/6/weatherColor} || '#FFA500'}"
+                            class="sapUiTinyMarginEnd"
+                            id="iconPanelDay7">
+                        </core:Icon>
+                        <VBox alignItems="End" id="vBoxPanelDay7Temp">
+                            <Title text="{= ${forecastModel>/6/temperature} || '20'}°" titleStyle="H4" id="titlePanelDay7Temp"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+            </Panel>
+
+            <Panel id="suggestionsPanel" height="8rem" width="100%">
+                <layoutData>
+                    <layout:GridData id="suggestionsGridData" span="L3 M12 S12"/>
+                </layoutData>
+                <content>
+                    <VBox id="suggestionsVBox" class="sapUiSmallMargin">
+                        <Title id="suggestionsTitle" text="Sugestões do Dia" titleStyle="H6" class="sapUiTinyMarginBottom"/>
+                        <List
+                            id="suggestionsList"
+                            items="{suggestionsModel>/suggestions}"
+                            noDataText="Busque uma cidade para ver as sugestões">
+                            <StandardListItem
+                                id="suggestionItem"
+                                title="{suggestionsModel>text}"
+                                icon="{= ${suggestionsModel>icon} || 'sap-icon://hint'}"
+                                iconDensityAware="false"
+                                type="Inactive"/>
+                        </List>
+                    </VBox>
+                </content>
+            </Panel>
+
+            <Panel id="hourlyChartPanel" width="100%">
+                <layoutData>
+                    <layout:GridData id="gridDataHourlyChart" span="L9 M12 S12"/>
+                </layoutData>
+                <content>
+                    <viz:VizFrame
+                        id="hourlyColumnChart"
+                        width="100%"
+                        height="16rem"
+                        uiConfig="{applicationSet:'fiori'}"
+                        vizType="column"
+                        vizProperties="{&quot;title&quot;:{&quot;visible&quot;:false},&quot;plotArea&quot;:{&quot;colorPalette&quot;:
+                        [&quot;#0A6ED1&quot;],&quot;dataLabel&quot;:{&quot;visible&quot;:true},&quot;drawingEffect&quot;:&quot;normal&quot;
+                        ,&quot;gap&quot;:{&quot;innerGroupSpacing&quot;:1.5,&quot;outerGroupSpacing&quot;:1.2}},&quot;valueAxis&quot;:{&quot;
+                        title&quot;:{&quot;text&quot;:&quot;Temperatura (°C)&quot;},&quot;scale&quot;:{&quot;fixedRange&quot;
+                        :true,&quot;minValue&quot;:0,&quot;maxValue&quot;:40,&quot;stepSize&quot;:10},&quot;axisTick&quot;
+                        :{&quot;visible&quot;:true},&quot;label&quot;:{&quot;formatString&quot;:&quot;u&quot;}},&quot;categoryAxis&quot;
+                        :{&quot;title&quot;:{&quot;visible&quot;:false}}}">
+                        <viz:dataset>
+                            <viz.data:FlattenedDataset
+                                id="hourlyDataset"
+                                data="{hourlyChartModel>/points}">
+                                <viz.data:dimensions>
+                                    <viz.data:DimensionDefinition
+                                        id="hourDimension"
+                                        name="Hora"
+                                        value="{hourLabel}"/>
+                                </viz.data:dimensions>
+                                <viz.data:measures>
+                                    <viz.data:MeasureDefinition
+                                        id="hourTemperatureMeasure"
+                                        name="Temperatura"
+                                        value="{temperature}"/>
+                                </viz.data:measures>
+                            </viz.data:FlattenedDataset>
+                        </viz:dataset>
+                        <viz:feeds>
+                            <viz.feeds:FeedItem
+                                id="valueAxisFeed"
+                                uid="valueAxis"
+                                type="Measure"
+                                values="Temperatura"/>
+                            <viz.feeds:FeedItem
+                                id="categoryAxisFeed"
+                                uid="categoryAxis"
+                                type="Dimension"
+                                values="Hora"/>
+                        </viz:feeds>
+                    </viz:VizFrame>
+                </content>
+            </Panel>
+
+            <VBox id="imageWeatherVBox" width="100%">
+                <layoutData>
+                    <layout:GridData span="L3 M12 S12" id="gridDataImageWeather"/>
+                </layoutData>
+                <Image 
+                    id="weatherImage"
+                    src="../assets/logo-marca.jpeg"
+                    alt="Clima atual"
+                    width="100%"
+                    height="17.310rem"
+                    densityAware="false"
+                    class=""/>
+            </VBox>
+
+            
+
+            
+        </layout:Grid>
+        
+
+
+
+
+        
+
+
+
+
+
+
+
+    
+    </Page>
+
+</mvc:View>

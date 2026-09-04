@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <HBox class="pageNavTabs" alignItems="Center" id="pageNavTabs">
+        <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" id="overflowToolbarLayoutData"/>
+        </layoutData>
+        <Button
+            id="btnPagina1"
+            text="Guardiões do Clima"
+            type="Transparent"
+            press="onNavigateToPage1"
+            class="pageNavTab"/>
+        <Button
+            id="btnPagina2"
+            text="Map 3D"
+            type="Transparent"
+            press="onNavigateToPage2"
+            class="pageNavTab"/>
+    </HBox>
+</core:FragmentDefinition>

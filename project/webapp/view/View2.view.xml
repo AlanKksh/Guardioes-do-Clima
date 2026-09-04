@@ -1,0 +1,159 @@
+<mvc:View
+    controllerName="alan.projetos.projetinho.controller.View2"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page id="view2Page"
+          showNavButton="false"
+          enableScrolling="false"
+          class="view2Page no-page-title">
+
+        <customHeader>
+            <OverflowToolbar id="view2HeaderToolbar">
+                <core:Fragment
+                    id="view2PageNavFragment"
+                    fragmentName="alan.projetos.projetinho.view.fragments.PageNavigation"
+                    type="XML"/>
+            </OverflowToolbar>
+        </customHeader>
+
+        <content>
+            <VBox id="view2Root" class="view2Root" height="100%">
+
+                <Title
+                    id="view2Title"
+                    text="Mapa Climático Global"
+                    titleStyle="H3"
+                    class="view2Title"/>
+
+                <HBox id="view2MainArea" class="view2MainArea" height="100%" alignItems="Stretch">
+
+                    <VBox id="view2GlobeSection" class="view2GlobeSection" height="100%">
+                        <core:HTML
+                            id="cesiumHost"
+                            preferDOM="false"
+                            content='&lt;div id="cesiumGlobeHost" class="cesiumGlobeHost cesiumGlobeHost--loading"&gt;&lt;/div&gt;'
+                            afterRendering=".onCesiumHostRendered"/>
+                    </VBox>
+
+                    <VBox id="view2Sidebar" class="view2Sidebar" height="100%">
+
+                        <SearchField
+                            id="globeSearchField"
+                            width="100%"
+                            placeholder="Buscar cidade, estado ou país..."
+                            search=".onGlobeSearch"
+                            value="{globeModel>/searchQuery}"
+                            class="view2SearchField"/>
+
+                        <VBox id="view2SidebarPanels" class="view2SidebarPanels">
+
+                            <Panel
+                                id="view2LegendPanel"
+                                headerText="Legenda de Temperatura"
+                                expandable="false"
+                                class="view2SidebarPanel">
+                                <content>
+                                    <VBox id="view2LegendList" class="view2LegendList">
+                                        <HBox id="legendItemColdExtreme" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconColdExtreme" src="sap-icon://circle-task-2" color="#1e40af" class="view2LegendIcon"/>
+                                            <Text id="legendTextColdExtreme" text="&lt; 0°C — Frio intenso"/>
+                                        </HBox>
+                                        <HBox id="legendItemCold" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconCold" src="sap-icon://circle-task-2" color="#60a5fa" class="view2LegendIcon"/>
+                                            <Text id="legendTextCold" text="0–10°C — Frio"/>
+                                        </HBox>
+                                        <HBox id="legendItemMild" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconMild" src="sap-icon://circle-task-2" color="#22c55e" class="view2LegendIcon"/>
+                                            <Text id="legendTextMild" text="10–20°C — Agradável"/>
+                                        </HBox>
+                                        <HBox id="legendItemWarm" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconWarm" src="sap-icon://circle-task-2" color="#facc15" class="view2LegendIcon"/>
+                                            <Text id="legendTextWarm" text="20–25°C — Quente"/>
+                                        </HBox>
+                                        <HBox id="legendItemHot" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconHot" src="sap-icon://circle-task-2" color="#d97706" class="view2LegendIcon"/>
+                                            <Text id="legendTextHot" text="25–30°C — Muito quente"/>
+                                        </HBox>
+                                        <HBox id="legendItemVeryHot" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconVeryHot" src="sap-icon://circle-task-2" color="#f97316" class="view2LegendIcon"/>
+                                            <Text id="legendTextVeryHot" text="30–35°C — Calor"/>
+                                        </HBox>
+                                        <HBox id="legendItemExtreme" alignItems="Center" class="view2LegendItem">
+                                            <core:Icon id="legendIconExtreme" src="sap-icon://circle-task-2" color="#dc2626" class="view2LegendIcon"/>
+                                            <Text id="legendTextExtreme" text="&gt; 35°C — Extremo"/>
+                                        </HBox>
+                                    </VBox>
+                                </content>
+                            </Panel>
+
+                            <Panel
+                                id="view2ControlsPanel"
+                                headerText="Controles"
+                                expandable="false"
+                                class="view2SidebarPanel">
+                                <content>
+                                    <VBox id="view2ControlsBox" class="view2ControlsBox">
+                                        <Button
+                                            id="btnToggleClimateMode"
+                                            text="{= ${globeModel>/displayMode} === 'climate' ? 'Modo mapa' : 'Modo clima'}"
+                                            type="{= ${globeModel>/displayMode} === 'climate' ? 'Emphasized' : 'Default'}"
+                                            icon="sap-icon://temperature"
+                                            press=".onToggleClimateMode"
+                                            enabled="{globeModel>/globeReady}"
+                                            width="100%"/>
+                                        <Button
+                                            id="btnGlobeHome"
+                                            text="Visão mundial"
+                                            type="Emphasized"
+                                            icon="sap-icon://world"
+                                            press=".onGlobeHome"
+                                            enabled="{globeModel>/globeReady}"
+                                            width="100%"/>
+                                    </VBox>
+                                </content>
+                            </Panel>
+
+                            <Panel
+                                id="view2SelectionPanel"
+                                headerText="Ponto selecionado"
+                                expandable="false"
+                                class="view2SidebarPanel">
+                                <content>
+                                    <VBox id="view2SelectionBox" class="view2SelectionBox">
+                                        <Text id="view2SelectionLabel" text="{globeModel>/selectedLabel}" class="view2SelectionLabel"/>
+                                        <ObjectStatus
+                                            id="view2SelectedLat"
+                                            title="Latitude"
+                                            text="{globeModel>/selectedLatFormatted}"
+                                            state="Information"/>
+                                        <ObjectStatus
+                                            id="view2SelectedLon"
+                                            title="Longitude"
+                                            text="{globeModel>/selectedLonFormatted}"
+                                            state="Information"/>
+                                        <ObjectStatus
+                                            id="view2SelectedTemp"
+                                            title="Temperatura"
+                                            text="{globeModel>/selectedTempFormatted}"
+                                            state="Success"
+                                            visible="{= ${globeModel>/selectedTempFormatted} !== '—'}"/>
+                                    </VBox>
+                                </content>
+                            </Panel>
+
+                        </VBox>
+
+                        <Text
+                            id="view2Subtitle"
+                            text="Visualização 3D interativa do clima mundial. Gire o globo, aproxime com o scroll e clique em um ponto para selecionar."
+                            class="view2SidebarFooter"/>
+
+                    </VBox>
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
