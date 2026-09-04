@@ -5,7 +5,7 @@
             "name": "Start projetinho",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceFolder}/projetinho",
+            "cwd": "${workspaceFolder}/project",
             "runtimeExecutable": "npx",
             "windows": {
                 "runtimeExecutable": "npx.cmd"
@@ -30,7 +30,7 @@
             "name": "Start projetinho Local",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceFolder}/projetinho",
+            "cwd": "${workspaceFolder}/project",
             "runtimeExecutable": "npx",
             "windows": {
                 "runtimeExecutable": "npx.cmd"
