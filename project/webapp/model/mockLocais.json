@@ -1,0 +1,891 @@
+{
+  "paises": [
+    {
+      "nome": "Brasil",
+      "codigo": "BR",
+      "capital": "Brasília",
+      "estados": [
+        {
+          "nome": "Paraná",
+          "sigla": "PR",
+          "capital": "Curitiba",
+          "cidades": [
+            {
+              "nome": "Curitiba",
+              "aliases": ["curitiba"],
+              "pontos": {
+                "museu": "Museu Oscar Niemeyer",
+                "estadio": "Arena da Baixada (Estádio Joaquim Américo Guimarães)",
+                "parque": "Jardim Botânico de Curitiba",
+                "monumento": "Praça Tiradentes",
+                "atracao": "Ópera de Arame"
+              }
+            },
+            {
+              "nome": "Londrina",
+              "aliases": ["londrina"],
+              "pontos": {
+                "museu": "Museu Histórico de Londrina",
+                "estadio": "Estádio do Café",
+                "parque": "Parque Arthur Thomas",
+                "monumento": "Marco Zero de Londrina",
+                "atracao": "Catedral Metropolitana de Londrina"
+              }
+            },
+            {
+              "nome": "Maringá",
+              "aliases": ["maringa", "maringá"],
+              "pontos": {
+                "museu": "Museu da Bacia do Paraná",
+                "estadio": "Estádio Willie Davids",
+                "parque": "Parque do Ingá",
+                "monumento": "Catedral Basílica Menor de Nossa Senhora da Glória",
+                "atracao": "Parque do Ingá"
+              }
+            },
+            {
+              "nome": "Foz do Iguaçu",
+              "aliases": ["foz do iguacu", "foz do iguaçu", "foz"],
+              "pontos": {
+                "museu": "Ecomuseu de Itaipu",
+                "estadio": "Estádio Joaquim Pedro da Silveira (ABC Park)",
+                "parque": "Parque Nacional do Iguaçu",
+                "monumento": "Marco das Três Fronteiras",
+                "atracao": "Cataratas do Iguaçu"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Santa Catarina",
+          "sigla": "SC",
+          "capital": "Florianópolis",
+          "cidades": [
+            {
+              "nome": "Florianópolis",
+              "aliases": ["florianopolis", "floripa"],
+              "pontos": {
+                "museu": "Museu Histórico de Santa Catarina",
+                "estadio": "Estádio da Ressacada",
+                "parque": "Parque da Luz",
+                "monumento": "Ponte Hercílio Luz",
+                "atracao": "Praia de Jurerê"
+              }
+            },
+            {
+              "nome": "Joinville",
+              "aliases": ["joinville"],
+              "pontos": {
+                "museu": "Museu Nacional de Imigração",
+                "estadio": "Arena Joinville",
+                "parque": "Parque da Expoville",
+                "monumento": "Palácio dos Príncipes",
+                "atracao": "Estrada Dona Francisca"
+              }
+            },
+            {
+              "nome": "Blumenau",
+              "aliases": ["blumenau"],
+              "pontos": {
+                "museu": "Museu da Cerveja",
+                "estadio": "Estádio da Vila Nova / Complexo Esportivo",
+                "parque": "Parque Vila Germânica",
+                "monumento": "Castelinho da XV",
+                "atracao": "Oktoberfest de Blumenau"
+              }
+            },
+            {
+              "nome": "Balneário Camboriú",
+              "aliases": ["balneario camboriu", "balneário camboriú", "bc"],
+              "pontos": {
+                "museu": "Museu Histórico de Balneário Camboriú",
+                "estadio": "Estádio Municipal de Balneário Camboriú",
+                "parque": "Parque Unipraias",
+                "monumento": "Cristo Luz",
+                "atracao": "Praia Central / Bondinho"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "São Paulo",
+          "sigla": "SP",
+          "capital": "São Paulo",
+          "cidades": [
+            {
+              "nome": "São Paulo",
+              "aliases": ["sao paulo", "são paulo", "sampa"],
+              "pontos": {
+                "museu": "MASP - Museu de Arte de São Paulo",
+                "estadio": "Estádio do Morumbi",
+                "parque": "Parque Ibirapuera",
+                "monumento": "Monumento às Bandeiras",
+                "atracao": "Avenida Paulista"
+              }
+            },
+            {
+              "nome": "Campinas",
+              "aliases": ["campinas"],
+              "pontos": {
+                "museu": "Museu Dinâmico de Ciências de Campinas",
+                "estadio": "Estádio Moisés Lucarelli",
+                "parque": "Parque Portugal (Lagoa do Taquaral)",
+                "monumento": "Catedral Metropolitana de Campinas",
+                "atracao": "Torre do Castelo"
+              }
+            },
+            {
+              "nome": "Santos",
+              "aliases": ["santos"],
+              "pontos": {
+                "museu": "Museu do Pelé",
+                "estadio": "Estádio Urbano Caldeira (Vila Belmiro)",
+                "parque": "Orla de Santos",
+                "monumento": "Monumento aos Andradas",
+                "atracao": "Museu do Café"
+              }
+            },
+            {
+              "nome": "Ribeirão Preto",
+              "aliases": ["ribeirao preto", "ribeirão preto"],
+              "pontos": {
+                "museu": "Museu Histórico de Ribeirão Preto",
+                "estadio": "Estádio Santa Cruz (Arena Eurobike)",
+                "parque": "Parque Luis Carlos Raya",
+                "monumento": "Theatro Pedro II",
+                "atracao": "Pinguim / Centro Histórico"
+              }
+            },
+            {
+              "nome": "São José dos Campos",
+              "aliases": ["sao jose dos campos", "são josé dos campos", "sjc"],
+              "pontos": {
+                "museu": "Museu Tecnológico da Aeronáutica",
+                "estadio": "Estádio Martins Pereira",
+                "parque": "Parque Santos Dumont",
+                "monumento": "Monumento a Santos Dumont",
+                "atracao": "Vale do Paraíba / CTA"
+              }
+            },
+            {
+              "nome": "Guarulhos",
+              "aliases": ["guarulhos"],
+              "pontos": {
+                "museu": "Museu Histórico de Guarulhos",
+                "estadio": "Estádio Antônio Soares de Oliveira (Baetão)",
+                "parque": "Parque Chico Mendes",
+                "monumento": "Praça da Bíblia",
+                "atracao": "Aeroporto Internacional de Guarulhos"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Rio de Janeiro",
+          "sigla": "RJ",
+          "capital": "Rio de Janeiro",
+          "cidades": [
+            {
+              "nome": "Rio de Janeiro",
+              "aliases": ["rio de janeiro", "rio"],
+              "pontos": {
+                "museu": "Museu do Amanhã",
+                "estadio": "Estádio do Maracanã",
+                "parque": "Parque Lage",
+                "monumento": "Cristo Redentor",
+                "atracao": "Pão de Açúcar"
+              }
+            },
+            {
+              "nome": "Niterói",
+              "aliases": ["niteroi", "niterói"],
+              "pontos": {
+                "museu": "Museu de Arte Contemporânea de Niterói",
+                "estadio": "Estádio Caio Martins",
+                "parque": "Parque da Cidade",
+                "monumento": "Fortaleza de Santa Cruz",
+                "atracao": "MAC Niterói"
+              }
+            },
+            {
+              "nome": "Petrópolis",
+              "aliases": ["petropolis", "petrópolis"],
+              "pontos": {
+                "museu": "Museu Imperial",
+                "estadio": "Estádio Atílio Marotti",
+                "parque": "Parque Natural Municipal da Posse",
+                "monumento": "Palácio de Cristal",
+                "atracao": "Catedral de São Pedro de Alcântara"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Minas Gerais",
+          "sigla": "MG",
+          "capital": "Belo Horizonte",
+          "cidades": [
+            {
+              "nome": "Belo Horizonte",
+              "aliases": ["belo horizonte", "bh"],
+              "pontos": {
+                "museu": "Museu de Artes e Ofícios",
+                "estadio": "Mineirão",
+                "parque": "Parque Municipal Américo Renné Giannetti",
+                "monumento": "Praça da Liberdade",
+                "atracao": "Mercado Central"
+              }
+            },
+            {
+              "nome": "Ouro Preto",
+              "aliases": ["ouro preto"],
+              "pontos": {
+                "museu": "Museu da Inconfidência",
+                "estadio": "Estádio Hermínio Ometto",
+                "parque": "Praça Tiradentes",
+                "monumento": "Igreja de São Francisco de Assis",
+                "atracao": "Centro Histórico de Ouro Preto"
+              }
+            },
+            {
+              "nome": "Uberlândia",
+              "aliases": ["uberlandia", "uberlândia"],
+              "pontos": {
+                "museu": "Museu Municipal de Uberlândia",
+                "estadio": "Estádio Parque do Sabiá",
+                "parque": "Parque do Sabiá",
+                "monumento": "Mercado Municipal",
+                "atracao": "Praça Clarimundo Carneiro"
+              }
+            },
+            {
+              "nome": "Juiz de Fora",
+              "aliases": ["juiz de fora"],
+              "pontos": {
+                "museu": "Museu Mariano Procópio",
+                "estadio": "Estádio Municipal Radialista Mário Helênio",
+                "parque": "Parque Halfeld",
+                "monumento": "Catedral de São João Batista",
+                "atracao": "Morro do Imperador"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Bahia",
+          "sigla": "BA",
+          "capital": "Salvador",
+          "cidades": [
+            {
+              "nome": "Salvador",
+              "aliases": ["salvador"],
+              "pontos": {
+                "museu": "Museu de Arte Moderna da Bahia",
+                "estadio": "Arena Fonte Nova",
+                "parque": "Parque da Cidade",
+                "monumento": "Elevador Lacerda",
+                "atracao": "Pelourinho"
+              }
+            },
+            {
+              "nome": "Feira de Santana",
+              "aliases": ["feira de santana"],
+              "pontos": {
+                "museu": "Museu Casa do Sertão",
+                "estadio": "Estádio Joia da Princesa",
+                "parque": "Parque Municipal Getúlio Vargas",
+                "monumento": "Relógio do Sol",
+                "atracao": "Portal da Cidade"
+              }
+            },
+            {
+              "nome": "Porto Seguro",
+              "aliases": ["porto seguro"],
+              "pontos": {
+                "museu": "Museu de Porto Seguro",
+                "estadio": "Estádio Municipal de Porto Seguro",
+                "parque": "Parque Nacional do Pau Brasil",
+                "monumento": "Marco do Descobrimento",
+                "atracao": "Cidade Histórica / Praias"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Distrito Federal",
+          "sigla": "DF",
+          "capital": "Brasília",
+          "cidades": [
+            {
+              "nome": "Brasília",
+              "aliases": ["brasilia", "brasília"],
+              "pontos": {
+                "museu": "Museu Nacional Honestino Guimarães",
+                "estadio": "Estádio Nacional Mané Garrincha",
+                "parque": "Parque da Cidade Sarah Kubitschek",
+                "monumento": "Congresso Nacional",
+                "atracao": "Catedral de Brasília"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Rio Grande do Sul",
+          "sigla": "RS",
+          "capital": "Porto Alegre",
+          "cidades": [
+            {
+              "nome": "Porto Alegre",
+              "aliases": ["porto alegre", "poa", "rio grande do sul"],
+              "pontos": {
+                "museu": "Museu de Arte do Rio Grande do Sul",
+                "estadio": "Estádio Beira-Rio",
+                "parque": "Parque Farroupilha (Redenção)",
+                "monumento": "Monumento aos Açorianos",
+                "atracao": "Usina do Gasômetro"
+              }
+            },
+            {
+              "nome": "Pelotas",
+              "aliases": ["pelotas"],
+              "pontos": {
+                "museu": "Museu do Doce",
+                "estadio": "Estádio Boca do Lobo",
+                "parque": "Parque Dom Antônio Zattera",
+                "monumento": "Mercado Público de Pelotas",
+                "atracao": "Centro Histórico de Pelotas"
+              }
+            },
+            {
+              "nome": "Caxias do Sul",
+              "aliases": ["caxias do sul", "caxias"],
+              "pontos": {
+                "museu": "Museu Municipal de Caxias do Sul",
+                "estadio": "Estádio Centenário",
+                "parque": "Parque Immigrant",
+                "monumento": "Monumento Nacional ao Imigrante",
+                "atracao": "Catedral Diocesana / Vinícolas"
+              }
+            },
+            {
+              "nome": "Gramado",
+              "aliases": ["gramado"],
+              "pontos": {
+                "museu": "Museu do Chocolate",
+                "estadio": "Estádio Eurico Lara (cidade vizinha / região)",
+                "parque": "Lago Negro",
+                "monumento": "Portico / Rua Coberta",
+                "atracao": "Mini Mundo"
+              }
+            },
+            {
+              "nome": "Santa Maria",
+              "aliases": ["santa maria"],
+              "pontos": {
+                "museu": "Museu Educativo Gama D'Eça",
+                "estadio": "Estádio Presidente Vargas",
+                "parque": "Parque Itaimbé",
+                "monumento": "Catedral de Santa Maria",
+                "atracao": "Centro Universitário / UFSM"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Pernambuco",
+          "sigla": "PE",
+          "capital": "Recife",
+          "cidades": [
+            {
+              "nome": "Recife",
+              "aliases": ["recife"],
+              "pontos": {
+                "museu": "Instituto Ricardo Brennand",
+                "estadio": "Arena de Pernambuco",
+                "parque": "Parque da Jaqueira",
+                "monumento": "Marco Zero",
+                "atracao": "Recife Antigo"
+              }
+            },
+            {
+              "nome": "Olinda",
+              "aliases": ["olinda"],
+              "pontos": {
+                "museu": "Museu de Arte Contemporânea de Pernambuco",
+                "estadio": "Estádio Municipal de Olinda",
+                "parque": "Praça do Carmo",
+                "monumento": "Alto da Sé",
+                "atracao": "Centro Histórico de Olinda"
+              }
+            },
+            {
+              "nome": "Caruaru",
+              "aliases": ["caruaru"],
+              "pontos": {
+                "museu": "Museu do Barro / Espaço Cultural",
+                "estadio": "Estádio Lacerdão",
+                "parque": "Parque 18 de Maio",
+                "monumento": "Feira de Caruaru",
+                "atracao": "Alto do Moura"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Ceará",
+          "sigla": "CE",
+          "capital": "Fortaleza",
+          "cidades": [
+            {
+              "nome": "Fortaleza",
+              "aliases": ["fortaleza"],
+              "pontos": {
+                "museu": "Museu da Cultura Cearense",
+                "estadio": "Arena Castelão",
+                "parque": "Parque do Cocó",
+                "monumento": "Centro Dragão do Mar",
+                "atracao": "Praia de Iracema"
+              }
+            },
+            {
+              "nome": "Juazeiro do Norte",
+              "aliases": ["juazeiro do norte", "juazeiro"],
+              "pontos": {
+                "museu": "Museu Vivo do Padre Cícero",
+                "estadio": "Estádio Romeirão",
+                "parque": "Parque Ecológico das Timbaúbas",
+                "monumento": "Estátua do Padre Cícero",
+                "atracao": "Horto / Colina do Horto"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Amazonas",
+          "sigla": "AM",
+          "capital": "Manaus",
+          "cidades": [
+            {
+              "nome": "Manaus",
+              "aliases": ["manaus"],
+              "pontos": {
+                "museu": "Museu do Homem do Norte",
+                "estadio": "Arena da Amazônia",
+                "parque": "Parque Municipal do Mindu",
+                "monumento": "Teatro Amazonas",
+                "atracao": "Encontro das Águas"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Pará",
+          "sigla": "PA",
+          "capital": "Belém",
+          "cidades": [
+            {
+              "nome": "Belém",
+              "aliases": ["belem", "belém"],
+              "pontos": {
+                "museu": "Museu Paraense Emílio Goeldi",
+                "estadio": "Estádio Olímpico do Pará (Mangueirão)",
+                "parque": "Parque da Residência",
+                "monumento": "Ver-o-Peso",
+                "atracao": "Estação das Docas"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Goiás",
+          "sigla": "GO",
+          "capital": "Goiânia",
+          "cidades": [
+            {
+              "nome": "Goiânia",
+              "aliases": ["goiania", "goiânia"],
+              "pontos": {
+                "museu": "Museu de Arte Contemporânea de Goiás",
+                "estadio": "Estádio Serra Dourada",
+                "parque": "Parque Vaca Brava",
+                "monumento": "Monumento às Três Raças",
+                "atracao": "Praça Cívica / Centro"
+              }
+            },
+            {
+              "nome": "Caldas Novas",
+              "aliases": ["caldas novas"],
+              "pontos": {
+                "museu": "Memorial do Turismo / Espaço Cultural",
+                "estadio": "Estádio Municipal de Caldas Novas",
+                "parque": "Parque Estadual da Serra de Caldas",
+                "monumento": "Praça Central",
+                "atracao": "Águas Termais / Hot Parks"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Mato Grosso",
+          "sigla": "MT",
+          "capital": "Cuiabá",
+          "cidades": [
+            {
+              "nome": "Cuiabá",
+              "aliases": ["cuiaba", "cuiabá"],
+              "pontos": {
+                "museu": "Museu do Morro da Caixa d'Água Velha",
+                "estadio": "Arena Pantanal",
+                "parque": "Parque Mãe Bonifácia",
+                "monumento": "Centro Geodésico da América do Sul",
+                "atracao": "Porto / Mercado do Porto"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Mato Grosso do Sul",
+          "sigla": "MS",
+          "capital": "Campo Grande",
+          "cidades": [
+            {
+              "nome": "Campo Grande",
+              "aliases": ["campo grande"],
+              "pontos": {
+                "museu": "Museu de Arte Contemporânea de Mato Grosso do Sul",
+                "estadio": "Estádio Morenão",
+                "parque": "Parque das Nações Indígenas",
+                "monumento": "Monumento aos Imigrantes",
+                "atracao": "Feira Central / Feira Hippie"
+              }
+            },
+            {
+              "nome": "Bonito",
+              "aliases": ["bonito"],
+              "pontos": {
+                "museu": "Centro de Interpretação Ambiental",
+                "estadio": "Campo Municipal de Bonito",
+                "parque": "Parque Nacional da Serra da Bodoquena",
+                "monumento": "Praça da Liberdade",
+                "atracao": "Gruta do Lago Azul / Rio Sucuri"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Maranhão",
+          "sigla": "MA",
+          "capital": "São Luís",
+          "cidades": [
+            {
+              "nome": "São Luís",
+              "aliases": ["sao luis", "são luís", "sao luís"],
+              "pontos": {
+                "museu": "Museu Histórico e Artístico do Maranhão",
+                "estadio": "Estádio Castelão (São Luís)",
+                "parque": "Parque da Lagoa da Jansen",
+                "monumento": "Palácio dos Leões",
+                "atracao": "Centro Histórico / Reviver"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Paraíba",
+          "sigla": "PB",
+          "capital": "João Pessoa",
+          "cidades": [
+            {
+              "nome": "João Pessoa",
+              "aliases": ["joao pessoa", "joão pessoa"],
+              "pontos": {
+                "museu": "Estação Cabo Branco / Espaço Cultural",
+                "estadio": "Estádio Almeidão",
+                "parque": "Parque Solon de Lucena",
+                "monumento": "Farol do Cabo Branco",
+                "atracao": "Praia de Tambaú"
+              }
+            },
+            {
+              "nome": "Campina Grande",
+              "aliases": ["campina grande"],
+              "pontos": {
+                "museu": "Museu de Arte Assis Chateaubriand",
+                "estadio": "Estádio Amigão",
+                "parque": "Parque da Criança",
+                "monumento": "Açude Velho",
+                "atracao": "Maior São João do Mundo"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Alagoas",
+          "sigla": "AL",
+          "capital": "Maceió",
+          "cidades": [
+            {
+              "nome": "Maceió",
+              "aliases": ["maceio", "maceió"],
+              "pontos": {
+                "museu": "Museu Théo Brandão",
+                "estadio": "Estádio Rei Pelé (Trapichão)",
+                "parque": "Parque Municipal de Maceió",
+                "monumento": "Palácio do Governo",
+                "atracao": "Praia de Pajuçara / Piscina Natural"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Sergipe",
+          "sigla": "SE",
+          "capital": "Aracaju",
+          "cidades": [
+            {
+              "nome": "Aracaju",
+              "aliases": ["aracaju"],
+              "pontos": {
+                "museu": "Museu da Gente Sergipana",
+                "estadio": "Estádio Batistão",
+                "parque": "Parque da Sementeira",
+                "monumento": "Passarela do Caranguejo",
+                "atracao": "Orla de Atalaia"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Rio Grande do Norte",
+          "sigla": "RN",
+          "capital": "Natal",
+          "cidades": [
+            {
+              "nome": "Natal",
+              "aliases": ["natal"],
+              "pontos": {
+                "museu": "Museu Câmara Cascudo",
+                "estadio": "Arena das Dunas",
+                "parque": "Parque das Dunas",
+                "monumento": "Forte dos Reis Magos",
+                "atracao": "Ponta Negra / Morro do Careca"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Piauí",
+          "sigla": "PI",
+          "capital": "Teresina",
+          "cidades": [
+            {
+              "nome": "Teresina",
+              "aliases": ["teresina"],
+              "pontos": {
+                "museu": "Museu do Piauí",
+                "estadio": "Estádio Albertão",
+                "parque": "Parque Zoobotânico",
+                "monumento": "Ponte Estaiada",
+                "atracao": "Encontro dos Rios Parnaíba e Poti"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Espírito Santo",
+          "sigla": "ES",
+          "capital": "Vitória",
+          "cidades": [
+            {
+              "nome": "Vitória",
+              "aliases": ["vitoria", "vitória"],
+              "pontos": {
+                "museu": "Museu de Arte do Espírito Santo",
+                "estadio": "Estádio Kleber Andrade (Cariacica/região)",
+                "parque": "Parque Pedra da Cebola",
+                "monumento": "Convento da Penha (vista)",
+                "atracao": "Ilha do Frade / Orla de Camburi"
+              }
+            },
+            {
+              "nome": "Vila Velha",
+              "aliases": ["vila velha"],
+              "pontos": {
+                "museu": "Museu Homero Massena",
+                "estadio": "Estádio Ninho do Águia",
+                "parque": "Parque da Prainha",
+                "monumento": "Convento da Penha",
+                "atracao": "Praia da Costa"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Tocantins",
+          "sigla": "TO",
+          "capital": "Palmas",
+          "cidades": [
+            {
+              "nome": "Palmas",
+              "aliases": ["palmas"],
+              "pontos": {
+                "museu": "Museu Histórico do Tocantins",
+                "estadio": "Estádio Nilton Santos (Palmas)",
+                "parque": "Praia da Graciosa",
+                "monumento": "Palácio Araguaia",
+                "atracao": "Ilha Canela / Lago de Palmas"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Rondônia",
+          "sigla": "RO",
+          "capital": "Porto Velho",
+          "cidades": [
+            {
+              "nome": "Porto Velho",
+              "aliases": ["porto velho"],
+              "pontos": {
+                "museu": "Museu da Estrada de Ferro Madeira-Mamoré",
+                "estadio": "Estádio Aluízio Ferreira",
+                "parque": "Parque Natural Municipal de Porto Velho",
+                "monumento": "Estrada de Ferro Madeira-Mamoré",
+                "atracao": "Mercado Cultural / Rio Madeira"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Acre",
+          "sigla": "AC",
+          "capital": "Rio Branco",
+          "cidades": [
+            {
+              "nome": "Rio Branco",
+              "aliases": ["rio branco"],
+              "pontos": {
+                "museu": "Museu da Borracha",
+                "estadio": "Arena da Floresta",
+                "parque": "Parque da Maternidade",
+                "monumento": "Palácio Rio Branco",
+                "atracao": "Gameleira / Mercado Velho"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Amapá",
+          "sigla": "AP",
+          "capital": "Macapá",
+          "cidades": [
+            {
+              "nome": "Macapá",
+              "aliases": ["macapa", "macapá"],
+              "pontos": {
+                "museu": "Museu Sacaca",
+                "estadio": "Estádio Milton Corrêa (Zerão)",
+                "parque": "Parque do Trapiche",
+                "monumento": "Fortaleza de São José de Macapá",
+                "atracao": "Marco Zero do Equador"
+              }
+            }
+          ]
+        },
+        {
+          "nome": "Roraima",
+          "sigla": "RR",
+          "capital": "Boa Vista",
+          "cidades": [
+            {
+              "nome": "Boa Vista",
+              "aliases": ["boa vista"],
+              "pontos": {
+                "museu": "Museu Integrado de Roraima",
+                "estadio": "Estádio Flamarion Vasconcelos (Canarinho)",
+                "parque": "Orla Taumanan",
+                "monumento": "Monumento aos Pioneiros",
+                "atracao": "Centro Cívico / Praça das Águas"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Argentina",
+      "codigo": "AR",
+      "capital": "Buenos Aires",
+      "estados": [
+        {
+          "nome": "Buenos Aires",
+          "sigla": "CABA",
+          "capital": "Buenos Aires",
+          "cidades": [
+            {
+              "nome": "Buenos Aires",
+              "aliases": ["buenos aires"],
+              "pontos": {
+                "museu": "Museo Nacional de Bellas Artes",
+                "estadio": "Estadio Monumental",
+                "parque": "Parque Tres de Febrero",
+                "monumento": "Obelisco",
+                "atracao": "Caminito"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Portugal",
+      "codigo": "PT",
+      "capital": "Lisboa",
+      "estados": [
+        {
+          "nome": "Lisboa",
+          "sigla": "LSB",
+          "capital": "Lisboa",
+          "cidades": [
+            {
+              "nome": "Lisboa",
+              "aliases": ["lisboa", "lisbon"],
+              "pontos": {
+                "museu": "Museu Nacional de Arte Antiga",
+                "estadio": "Estádio da Luz",
+                "parque": "Parque Eduardo VII",
+                "monumento": "Torre de Belém",
+                "atracao": "Castelo de São Jorge"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Estados Unidos",
+      "codigo": "US",
+      "capital": "Washington, D.C.",
+      "estados": [
+        {
+          "nome": "Nova York",
+          "sigla": "NY",
+          "capital": "Albany",
+          "cidades": [
+            {
+              "nome": "Nova York",
+              "aliases": ["new york", "nova york", "nyc"],
+              "pontos": {
+                "museu": "The Metropolitan Museum of Art",
+                "estadio": "Yankee Stadium",
+                "parque": "Central Park",
+                "monumento": "Estátua da Liberdade",
+                "atracao": "Times Square"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

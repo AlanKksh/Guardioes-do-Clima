@@ -1,0 +1,311 @@
+/* Enter your custom styles here */
+
+html, body, body > div, #container, #container-uiarea, #app {
+  height: 100%;
+}
+
+#app .sapMNav,
+#app .sapMNavItem,
+#app .sapMPage {
+  height: 100%;
+}
+
+.pageNavTabs {
+  gap: 0.25rem;
+}
+
+.pageNavTab {
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  color: #6a6d70;
+  font-weight: 500;
+  min-width: 5.5rem;
+}
+
+.pageNavTab:hover {
+  background: #f5f6f7;
+  color: #32363a;
+}
+
+.pageNavTabActive {
+  color: #0a6ed1;
+  border-bottom-color: #0a6ed1;
+  font-weight: 600;
+}
+
+.pageNavTabActive:hover {
+  background: transparent;
+  color: #0a6ed1;
+}
+
+.limiterPanel{
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 600px) {
+  .limiterPanel {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.climate-title {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.current-time {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+.hide-on-small-medium {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .hide-on-small-medium {
+    display: block;
+  }
+}
+
+.todayPanelContent {
+  width: 100%;
+}
+
+.todayPanelIconTemp {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1023px) {
+  .todayPanelIconTemp {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .todayPanelIconTemp .sapMTitle {
+    margin-left: auto;
+  }
+}
+
+.forecastPanelIconTemp {
+  gap: 0.5rem;
+}
+
+@media (max-width: 1023px) {
+  .forecastPanelIconTemp {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .forecastPanelTemp {
+    margin-left: auto;
+  }
+}
+
+/* View2 — Mapa 3D Cesium */
+.view2Page {
+  height: 100%;
+  overflow: hidden;
+}
+
+.view2Page .sapMPageSection,
+.view2Page .sapMPageContent {
+  padding: 0 !important;
+  height: 100%;
+  overflow: hidden;
+}
+
+.view2Root {
+  height: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  padding: 0.35rem 1rem 0.5rem;
+  gap: 0.35rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.view2Title {
+  color: #1d2d3e;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.view2Title .sapMTitle {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.view2MainArea {
+  flex: 1 1 0;
+  height: 0;
+  min-height: 0;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.view2GlobeSection {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.view2GlobeSection .sapUiCoreHTML {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.view2GlobeSection .sapUiCoreHTML > div {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cesiumGlobeHost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #070b12;
+  border: 1px solid rgba(10, 110, 209, 0.18);
+  box-shadow: 0 4px 16px rgba(7, 11, 18, 0.14);
+}
+
+.cesiumGlobeHost.cesiumGlobeHost--loading {
+  visibility: hidden;
+}
+
+.cesiumGlobeHost.cesiumGlobeHost--ready {
+  visibility: visible;
+}
+
+.view2Sidebar {
+  width: 20rem;
+  min-width: 17rem;
+  max-width: 22rem;
+  flex: 0 0 auto;
+  min-height: 0;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.view2SearchField {
+  flex-shrink: 0;
+}
+
+.view2SidebarPanels {
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0.45rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.view2SidebarPanel {
+  background: #f7f9fa;
+  border: 1px solid #e5e9ec;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.view2SidebarPanel .sapMPanelHdr {
+  font-weight: 600;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+}
+
+.view2SidebarPanel .sapMPanelContent {
+  padding-top: 0.35rem;
+  padding-bottom: 0.45rem;
+}
+
+.view2LegendList,
+.view2SelectionBox,
+.view2ControlsBox {
+  gap: 0.4rem;
+}
+
+.view2LegendItem {
+  gap: 0.45rem;
+}
+
+.view2LegendIcon {
+  font-size: 0.8rem;
+}
+
+.view2SelectionLabel,
+.view2SidebarFooter {
+  color: #6a6d70;
+  line-height: 1.35;
+  font-size: 0.8rem;
+}
+
+.view2SidebarFooter {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+.view2SelectionBox .sapMObjStatus {
+  margin-top: 0.1rem;
+}
+
+.cesium-viewer,
+.cesium-viewer-cesiumWidgetContainer,
+.cesium-widget {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cesium-widget canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cesium-viewer-bottom {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .view2Root {
+    padding: 0.35rem 0.75rem 0.5rem;
+  }
+
+  .view2MainArea {
+    flex-direction: column;
+  }
+
+  .view2Sidebar {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    max-height: 42%;
+  }
+
+  .view2GlobeSection {
+    flex: 1 1 0;
+    height: 0;
+  }
+}
